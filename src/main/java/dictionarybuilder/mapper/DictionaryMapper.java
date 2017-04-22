@@ -25,6 +25,7 @@ public class DictionaryMapper extends Mapper<LongWritable, Text, Text, IntWritab
     private Punctuation punctuation;
 
     public DictionaryMapper() {
+
     }
 
     @Override
@@ -49,7 +50,7 @@ public class DictionaryMapper extends Mapper<LongWritable, Text, Text, IntWritab
             }
 
         } catch (IOException | InterruptedException e) {
-            //            @TODO - log this to somewhere useful
+            // @TODO - log this to somewhere useful
             System.out.println(e.getMessage());
         }
     }
