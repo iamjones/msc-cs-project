@@ -1,4 +1,4 @@
-package dictionarybuilder.utils;
+package utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,14 +70,12 @@ public class StopWords {
      * @param document String
      * @return List<String>
      */
-    public List<String> removeStopWords(String document) {
+    public List<String> removeStopWords(List<String> document) {
 
         List<String> nonStopWords = new ArrayList<>();
         List<String> stopWords = Arrays.asList(this.stopwords);
 
-        String[] words = document.split(" ");
-
-        for (String word : words) {
+        for (String word : document) {
             if (!stopWords.contains(word.toLowerCase())) {
                 nonStopWords.add(word);
             }

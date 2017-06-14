@@ -1,9 +1,9 @@
-package dictionarybuilder.utils;
+package utils;
 
-import dictionarybuilder.utils.StopWords;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -25,8 +25,9 @@ public class StopWordsTest {
     public void it_should_remove_stop_words_from_a_string_and_return_a_list() {
 
         String sentence = "This sentence contains some stop words";
+        List<String> doc = Arrays.asList(sentence.split(" "));
 
-        List<String> words = this.stopWords.removeStopWords(sentence);
+        List<String> words = this.stopWords.removeStopWords(doc);
 
         assertThat(words.contains("sentence"), is(true));
         assertThat(words.contains("stop"), is(true));

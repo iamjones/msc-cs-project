@@ -35,7 +35,8 @@ public class DictionaryBuilder {
         Job job = Job.getInstance(configuration, "dictionarybuilder");
         job.setJarByClass(DictionaryBuilder.class);
         job.setMapperClass(DictionaryMapper.class);
-        job.setCombinerClass(DictionaryReducer.class);
+//        job.setCombinerClass();
+        job.setReducerClass(DictionaryReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 

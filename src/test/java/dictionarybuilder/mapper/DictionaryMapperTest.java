@@ -49,4 +49,33 @@ public class DictionaryMapperTest {
                 .withOutput(new Text("small"),  new IntWritable(1))
                 .runTest();
     }
+
+    @Test
+    public void it_should_ignore_words_containing_numbers()
+        throws IOException {
+
+        LongWritable inputKey = new LongWritable(1);
+        Text inputValue = new Text("{"
+            + "\"reviewText\": \"123foo 456bar789 hello0world foobar\""
+        + "}");
+
+        dictionaryMapper.withInput(inputKey, inputValue)
+            .withOutput(new Text("foobar"),  new IntWritable(1))
+            .runTest();
+    }
+
+    @Test
+    public void it_should_ignore_empty_strings()
+        throws IOException {
+
+        LongWritable inputKey = new LongWritable(1);
+        Text inputValue = new Text("{"
+            + "\"reviewText\": \"Foo        Bar\""
+            + "}");
+
+        dictionaryMapper.withInput(inputKey, inputValue)
+            .withOutput(new Text("foo"),  new IntWritable(1))
+            .withOutput(new Text("bar"),  new IntWritable(1))
+            .runTest();
+    }
 }

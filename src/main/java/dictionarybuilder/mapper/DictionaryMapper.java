@@ -1,8 +1,8 @@
 package dictionarybuilder.mapper;
 
-import dictionarybuilder.model.Review;
-import dictionarybuilder.utils.Punctuation;
-import dictionarybuilder.utils.StopWords;
+import model.Review;
+import utils.Punctuation;
+import utils.StopWords;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -10,6 +10,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.htrace.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -43,10 +44,28 @@ public class DictionaryMapper extends Mapper<LongWritable, Text, Text, IntWritab
 
             String reviewNoPunctuation = this.punctuation.removeAllPunctuation(review.getReviewText());
 
-            List<String> reviewNoStopWords = this.stopWords.removeStopWords(reviewNoPunctuation);
+            List<String> words             = Arrays.asList(reviewNoPunctuation.split(" "));
+            List<String> reviewNoStopWords = this.stopWords.removeStopWords(words);
 
             for (String word : reviewNoStopWords) {
-                context.write(new Text(word), new IntWritable(1));
+                String wordTrim = word.trim().toLowerCase();
+
+                // Ignore word if word is empty
+                if (wordTrim.isEmpty()) {
+                    continue;
+                }
+
+                // Ignore word if word is two or less characters
+                if (wordTrim.length() < 3) {
+                    continue;
+                }
+
+                // Ignore word if word contains numbers
+                if (wordTrim.matches("\\b\\w*\\d\\w*")) {
+                    continue;
+                }
+
+                context.write(new Text(wordTrim), new IntWritable(1));
             }
 
         } catch (IOException | InterruptedException e) {

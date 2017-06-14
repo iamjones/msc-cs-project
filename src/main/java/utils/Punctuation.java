@@ -1,4 +1,4 @@
-package dictionarybuilder.utils;
+package utils;
 
 /**
  * This class holds all types of punctuation we want to use and some methods to
@@ -9,7 +9,7 @@ public class Punctuation {
     private String[] punctuation = {
         "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",",
         "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "]", "^",
-        "_", "`", "{", "|", "}","~"
+        "_", "`", "{", "|", "}","~","\\"
     };
 
     /**

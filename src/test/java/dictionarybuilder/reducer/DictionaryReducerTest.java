@@ -26,9 +26,40 @@ public class DictionaryReducerTest {
     public void it_should_reduce_a_list_of_words() throws IOException {
 
         Text inputKey = new Text("test");
-        List<IntWritable> inputValues = Arrays.asList(new IntWritable(5), new IntWritable(7));
+        List<IntWritable> inputValues = Arrays.asList(
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1),
+            new IntWritable(1)
+        );
 
-        IntWritable outputValue = new IntWritable(12);
+        IntWritable outputValue = new IntWritable(30);
 
         reduceDriver.withInput(inputKey, inputValues)
                     .withOutput(inputKey, outputValue)

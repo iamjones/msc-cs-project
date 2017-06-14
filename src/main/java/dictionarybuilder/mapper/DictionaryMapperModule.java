@@ -1,8 +1,8 @@
 package dictionarybuilder.mapper;
 
 import com.google.inject.AbstractModule;
-import dictionarybuilder.utils.Punctuation;
-import dictionarybuilder.utils.StopWords;
+import utils.Punctuation;
+import utils.StopWords;
 
 /**
  * Sets up dependency injection for the DictionaryMapper class.

@@ -1,4 +1,4 @@
-package dictionarybuilder.model;
+package model;
 
 import java.util.List;
 
