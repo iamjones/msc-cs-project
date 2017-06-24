@@ -1,8 +1,9 @@
 package dictionarybuilder.mapper;
 
-import model.Review;
-import utils.Punctuation;
-import utils.StopWords;
+import domain.entity.Review;
+import domain.punctuation.Punctuation;
+import domain.stopwords.StopWords;
+import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -11,6 +12,8 @@ import org.apache.htrace.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 /**
@@ -24,6 +27,8 @@ public class DictionaryMapper extends Mapper<LongWritable, Text, Text, IntWritab
     private StopWords stopWords;
 
     private Punctuation punctuation;
+
+    final private String taggerModelSrc = "src/main/resources/tagger/english.tagger";
 
     public DictionaryMapper() {
 
@@ -47,7 +52,12 @@ public class DictionaryMapper extends Mapper<LongWritable, Text, Text, IntWritab
             List<String> words             = Arrays.asList(reviewNoPunctuation.split(" "));
             List<String> reviewNoStopWords = this.stopWords.removeStopWords(words);
 
-            for (String word : reviewNoStopWords) {
+            MaxentTagger tagger = new MaxentTagger(this.taggerModelSrc);
+            String sentenceTagged = tagger.tagTokenizedString(String.join(" ", reviewNoStopWords));
+
+            Map<String, String> taggedWords = new HashMap<>();
+
+            for (String word : sentenceTagged.split(" ")) {
                 String wordTrim = word.trim().toLowerCase();
 
                 // Ignore word if word is empty
@@ -65,7 +75,14 @@ public class DictionaryMapper extends Mapper<LongWritable, Text, Text, IntWritab
                     continue;
                 }
 
-                context.write(new Text(wordTrim), new IntWritable(1));
+                String[] parts = wordTrim.split("_");
+
+                // Ignore if the word has not been tagged
+//                if (!parts[1].equals("nn")) {
+//                    continue;
+//                }
+
+                context.write(new Text(parts[0]), new IntWritable(1));
             }
 
         } catch (IOException | InterruptedException e) {

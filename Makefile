@@ -9,7 +9,7 @@ c = 10
 
 # Builds a jar of the project
 build:
-	mvn package
+	mvn clean package
 
 # Run the dictionary builder job locally on a small set of real data
 build-dictionary-test: build

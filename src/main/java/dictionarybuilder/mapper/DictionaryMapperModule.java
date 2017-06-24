@@ -1,8 +1,10 @@
 package dictionarybuilder.mapper;
 
 import com.google.inject.AbstractModule;
-import utils.Punctuation;
-import utils.StopWords;
+import domain.punctuation.Punctuation;
+import domain.stopwords.StopWords;
+
+import static jdk.nashorn.internal.objects.NativeFunction.bind;
 
 /**
  * Sets up dependency injection for the DictionaryMapper class.

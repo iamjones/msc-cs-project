@@ -78,4 +78,19 @@ public class DictionaryMapperTest {
             .withOutput(new Text("bar"),  new IntWritable(1))
             .runTest();
     }
+
+//    @Test
+//    public void it_should_tag_a_sentence_correctly()
+//        throws IOException {
+//
+//        LongWritable inputKey = new LongWritable(1);
+//        Text inputValue = new Text("{"
+//            + "\"reviewText\": \"sdfsgdfcsgcdgdg I like watching movies\""
+//            + "}");
+//
+//        dictionaryMapper.withInput(inputKey, inputValue)
+//            .withOutput(new Text("foo"),  new IntWritable(1))
+//            .withOutput(new Text("bar"),  new IntWritable(1))
+//            .runTest();
+//    }
 }
