@@ -41,12 +41,9 @@ public class DictionaryMapperTest {
         Text inputValue = new Text(testJson);
 
         dictionaryMapper.withInput(inputKey, inputValue)
-                .withOutput(new Text("thought"),  new IntWritable(1))
                 .withOutput(new Text("battery"),  new IntWritable(1))
-                .withOutput(new Text("good"),  new IntWritable(1))
                 .withOutput(new Text("thought"),  new IntWritable(1))
                 .withOutput(new Text("screen"),  new IntWritable(1))
-                .withOutput(new Text("small"),  new IntWritable(1))
                 .runTest();
     }
 
@@ -70,27 +67,12 @@ public class DictionaryMapperTest {
 
         LongWritable inputKey = new LongWritable(1);
         Text inputValue = new Text("{"
-            + "\"reviewText\": \"Foo        Bar\""
+            + "\"reviewText\": \"Screen        Keyboard\""
             + "}");
 
         dictionaryMapper.withInput(inputKey, inputValue)
-            .withOutput(new Text("foo"),  new IntWritable(1))
-            .withOutput(new Text("bar"),  new IntWritable(1))
+            .withOutput(new Text("screen"),  new IntWritable(1))
+            .withOutput(new Text("keyboard"),  new IntWritable(1))
             .runTest();
     }
-
-//    @Test
-//    public void it_should_tag_a_sentence_correctly()
-//        throws IOException {
-//
-//        LongWritable inputKey = new LongWritable(1);
-//        Text inputValue = new Text("{"
-//            + "\"reviewText\": \"sdfsgdfcsgcdgdg I like watching movies\""
-//            + "}");
-//
-//        dictionaryMapper.withInput(inputKey, inputValue)
-//            .withOutput(new Text("foo"),  new IntWritable(1))
-//            .withOutput(new Text("bar"),  new IntWritable(1))
-//            .runTest();
-//    }
 }

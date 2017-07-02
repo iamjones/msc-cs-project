@@ -9,7 +9,7 @@ This project uses a makefile to provide an easy interface to run tasks.
 
 ### Build and run the dictionary builder
 
-Run the dictionary builder job locally on a small set of real data
+Run the dictionary builder job locally on a small set of real data ()
 ```
 make build-dictionary-test
 ```

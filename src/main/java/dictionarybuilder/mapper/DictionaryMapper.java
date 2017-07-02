@@ -55,6 +55,8 @@ public class DictionaryMapper extends Mapper<LongWritable, Text, Text, IntWritab
             MaxentTagger tagger = new MaxentTagger(this.taggerModelSrc);
             String sentenceTagged = tagger.tagTokenizedString(String.join(" ", reviewNoStopWords));
 
+//            @TODO - cache the tagged words as the tagger is slow over large data sets
+
             Map<String, String> taggedWords = new HashMap<>();
 
             for (String word : sentenceTagged.split(" ")) {
@@ -77,10 +79,10 @@ public class DictionaryMapper extends Mapper<LongWritable, Text, Text, IntWritab
 
                 String[] parts = wordTrim.split("_");
 
-                // Ignore if the word has not been tagged
-//                if (!parts[1].equals("nn")) {
-//                    continue;
-//                }
+                // Ignore if the word is not a Noun
+                if (!parts[1].equals("nn")) {
+                    continue;
+                }
 
                 context.write(new Text(parts[0]), new IntWritable(1));
             }
