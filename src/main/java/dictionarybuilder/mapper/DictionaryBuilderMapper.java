@@ -60,6 +60,7 @@ public class DictionaryMapper extends Mapper<LongWritable, Text, Text, IntWritab
             Map<String, String> taggedWords = new HashMap<>();
 
             for (String word : sentenceTagged.split(" ")) {
+
                 String wordTrim = word.trim().toLowerCase();
 
                 // Ignore word if word is empty
