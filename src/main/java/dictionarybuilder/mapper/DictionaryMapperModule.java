@@ -7,7 +7,7 @@ import domain.stopwords.StopWords;
 import static jdk.nashorn.internal.objects.NativeFunction.bind;
 
 /**
- * Sets up dependency injection for the DictionaryMapper class.
+ * Sets up dependency injection for the DictionaryBuilderMapper class.
  */
 public class DictionaryMapperModule extends AbstractModule {
 

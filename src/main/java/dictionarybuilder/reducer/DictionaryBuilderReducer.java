@@ -6,7 +6,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 
-public class DictionaryReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+public class DictionaryBuilderReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
 
     /**
      * This reducer should combine all data with the same key into a key-value

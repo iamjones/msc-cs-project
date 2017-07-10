@@ -1,4 +1,4 @@
-package project.reducer;
+package sentimentanalysis.reducer;
 
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Text;
@@ -11,8 +11,8 @@ public class WebContentReducerTest {
 
     @Before
     public void setUp() {
-        WebContentReducer webContentReducer = new WebContentReducer();
+        SentimentAnalysisReducer sentimentAnalysisReducer = new SentimentAnalysisReducer();
 
-        reduceDriver = ReduceDriver.newReduceDriver(webContentReducer);
+        reduceDriver = ReduceDriver.newReduceDriver(sentimentAnalysisReducer);
     }
 }

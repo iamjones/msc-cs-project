@@ -1,8 +1,8 @@
 package dictionarybuilder;
 
 import com.google.inject.Guice;
-import dictionarybuilder.mapper.DictionaryMapper;
-import dictionarybuilder.reducer.DictionaryReducer;
+import dictionarybuilder.mapper.DictionaryBuilderMapper;
+import dictionarybuilder.reducer.DictionaryBuilderReducer;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -10,7 +10,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import project.mapper.MapperModule;
+import sentimentanalysis.mapper.MapperModule;
 
 import java.io.IOException;
 
@@ -34,9 +34,9 @@ public class DictionaryBuilder {
 
         Job job = Job.getInstance(configuration, "dictionarybuilder");
         job.setJarByClass(DictionaryBuilder.class);
-        job.setMapperClass(DictionaryMapper.class);
+        job.setMapperClass(DictionaryBuilderMapper.class);
 //        job.setCombinerClass();
-        job.setReducerClass(DictionaryReducer.class);
+        job.setReducerClass(DictionaryBuilderReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 

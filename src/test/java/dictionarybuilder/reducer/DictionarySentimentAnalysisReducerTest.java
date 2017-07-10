@@ -11,14 +11,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class DictionaryReducerTest {
+public class DictionarySentimentAnalysisReducerTest {
 
     private ReduceDriver<Text, IntWritable, Text, IntWritable> reduceDriver;
 
     @Before
     public void setup() {
 
-        Reducer dictionaryReducer = new DictionaryReducer();
+        Reducer dictionaryReducer = new DictionaryBuilderReducer();
         reduceDriver = ReduceDriver.newReduceDriver(dictionaryReducer);
     }
 

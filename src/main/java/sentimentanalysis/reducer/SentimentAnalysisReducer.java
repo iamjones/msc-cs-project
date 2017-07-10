@@ -1,15 +1,14 @@
-package project.reducer;
+package sentimentanalysis.reducer;
 
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 
 /**
  * Reduces the web content based on URL and sentiment score.
  */
-public class WebContentReducer extends Reducer<Text, Text, Text, DoubleWritable> {
+public class SentimentAnalysisReducer extends org.apache.hadoop.mapreduce.Reducer<Text, Text, Text, DoubleWritable> {
 
     private final static String POSITIVE  = "Positive";
     private final static String NEGATIVE = "Negative";

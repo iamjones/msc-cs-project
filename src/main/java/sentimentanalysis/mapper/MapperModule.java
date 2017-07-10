@@ -1,4 +1,4 @@
-package project.mapper;
+package sentimentanalysis.mapper;
 
 import com.google.inject.AbstractModule;
 

@@ -22,7 +22,7 @@ import java.util.List;
  * Take the review body and remove any stop words and punctuation.
  * Split the remaining review body into words.
  */
-public class DictionaryMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+public class DictionaryBuilderMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
 
     private StopWords stopWords;
 
@@ -30,7 +30,7 @@ public class DictionaryMapper extends Mapper<LongWritable, Text, Text, IntWritab
 
     final private String taggerModelSrc = "src/main/resources/tagger/english.tagger";
 
-    public DictionaryMapper() {
+    public DictionaryBuilderMapper() {
 
     }
 

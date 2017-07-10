@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-public class DictionaryMapperTest {
+public class DictionarySentimentAnalysisMapperTest {
 
     private MapDriver<LongWritable, Text, Text, IntWritable> dictionaryMapper;
 
@@ -17,7 +17,7 @@ public class DictionaryMapperTest {
 
     @Before
     public void setUp() {
-        DictionaryMapper mapper = new DictionaryMapper();
+        DictionaryBuilderMapper mapper = new DictionaryBuilderMapper();
         dictionaryMapper = MapDriver.newMapDriver(mapper);
 
         testJson = "{"

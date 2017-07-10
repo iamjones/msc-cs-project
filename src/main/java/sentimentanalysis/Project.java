@@ -1,4 +1,4 @@
-package project;
+package sentimentanalysis;
 
 import com.google.inject.Guice;
 import org.apache.hadoop.conf.Configuration;
@@ -8,9 +8,9 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import project.mapper.MapperModule;
-import project.mapper.WebContentMapper;
-import project.reducer.WebContentReducer;
+import sentimentanalysis.mapper.MapperModule;
+import sentimentanalysis.mapper.SentimentAnalysisMapper;
+import sentimentanalysis.reducer.SentimentAnalysisReducer;
 
 import java.io.IOException;
 
@@ -32,8 +32,8 @@ public class Project {
 
         Job job = Job.getInstance(configuration, "project");
         job.setJarByClass(Project.class);
-        job.setMapperClass(WebContentMapper.class);
-        job.setCombinerClass(WebContentReducer.class);
+        job.setMapperClass(SentimentAnalysisMapper.class);
+        job.setReducerClass(SentimentAnalysisReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 

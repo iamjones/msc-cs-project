@@ -1,4 +1,4 @@
-package project.mapper;
+package sentimentanalysis.mapper;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -11,8 +11,8 @@ public class WebContentMapperTest {
 
     @Before
     public void setUp() {
-        WebContentMapper mapper = new WebContentMapper();
+        SentimentAnalysisMapper sentimentAnalysisMapper = new SentimentAnalysisMapper();
 
-        webContentMapper = MapDriver.newMapDriver(mapper);
+        webContentMapper = MapDriver.newMapDriver(sentimentAnalysisMapper);
     }
 }
