@@ -22,3 +22,15 @@ build-dictionary-test: build
 # Run the dictionary builder job locally on the full data set
 build-dictionary: build
 	hadoop jar target/msc-cs-project.jar dictionarybuilder.DictionaryBuilder $(inputDir)all_reviews.json $(outputDir)
+
+# Run the sentiment analyser job locally on a small set of real data
+# For example
+# - make build-sentiment-analyser-test c=10
+# - make build-sentiment-analyser-test c=25
+# - make build-sentiment-analyser-test c=100
+build-sentiment-analyser-test: build
+	hadoop jar target/msc-cs-project.jar sentimentanalysis.SentimentAnalysis $(inputDir)$(c)_reviews.json $(outputDir)
+
+# Run the dictionary builder job locally on the full data set
+build-sentiment-analyser: build
+	hadoop jar target/msc-cs-project.jar sentimentanalysis.SentimentAnalysis $(inputDir)all_reviews.json $(outputDir)

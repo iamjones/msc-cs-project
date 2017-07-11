@@ -1,6 +1,8 @@
 package sentimentanalysis;
 
 import com.google.inject.Guice;
+import domain.aspectwords.AspectWordsParser;
+import domain.entity.AspectWords;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -12,7 +14,6 @@ import sentimentanalysis.mapper.SentimentAnalysisMapper;
 import sentimentanalysis.mapper.SentimentAnalysisMapperModule;
 import sentimentanalysis.reducer.SentimentAnalysisReducer;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -20,8 +21,6 @@ import java.io.IOException;
  *  - Running the hadoop tasks
  */
 public class SentimentAnalysis {
-
-    private String aspectWordFilePath = "resources/input/asepctwords-test.json";
 
     public static void main(String[] args) throws
             IOException,
@@ -35,7 +34,9 @@ public class SentimentAnalysis {
 
         // Parse the file containing the aspect words into a List
         // that we can consumer further in the process
-        File aspectWordFile = new File("");
+        String aspectWordFilePath = "src/main/resources/aspectwords/aspectwords-test.json";
+        AspectWordsParser aspectWordsParser = new AspectWordsParser();
+        AspectWords aspectWords = aspectWordsParser.parse(aspectWordFilePath);
 
         Job job = Job.getInstance(configuration, "sentimentanalysis");
         job.setJarByClass(SentimentAnalysis.class);
