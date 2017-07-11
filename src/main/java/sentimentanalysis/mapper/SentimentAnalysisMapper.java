@@ -1,24 +1,40 @@
 package sentimentanalysis.mapper;
 
-import com.google.inject.Inject;
+import domain.punctuation.Punctuation;
+import domain.stopwords.StopWords;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapreduce.Mapper;
 
 import java.util.logging.Logger;
 
 /**
- * SentimentAnalysisMapper to extract text and map url to sentiment score.
+ * SentimentAnalysisMapper which is responsible for:
+ *
+ * Normalising the unstructured text by:
+ *  Removing punctuation
+ *  Removing stopwords
+ *
+ *
  */
 public class SentimentAnalysisMapper extends org.apache.hadoop.mapreduce.Mapper<LongWritable, Text, Text, Text> {
 
-    private Logger logger = Logger.getLogger("SentimentAnalysisMapper"); // @TODO use class not string
+    private Logger logger = Logger.getLogger("SentimentAnalysisMapper");
 
-    @Inject
+    private StopWords stopWords;
+
+    private Punctuation punctuation;
+
     public SentimentAnalysisMapper() {
 
     }
 
+    @Override
+    public void setup(Context context) {
+        this.stopWords   = new StopWords();
+        this.punctuation = new Punctuation();
+    }
+
+    @Override
     protected void map(LongWritable key, Text value, Context context) {
 
 

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class DictionarySentimentAnalysisReducerTest {
+public class DictionaryBuilderReducerTest {
 
     private ReduceDriver<Text, IntWritable, Text, IntWritable> reduceDriver;
 

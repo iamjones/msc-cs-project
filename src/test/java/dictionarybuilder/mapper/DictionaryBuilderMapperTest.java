@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-public class DictionarySentimentAnalysisMapperTest {
+public class DictionaryBuilderMapperTest {
 
     private MapDriver<LongWritable, Text, Text, IntWritable> dictionaryMapper;
 

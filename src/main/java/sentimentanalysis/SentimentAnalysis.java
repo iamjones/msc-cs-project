@@ -8,17 +8,20 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import sentimentanalysis.mapper.MapperModule;
 import sentimentanalysis.mapper.SentimentAnalysisMapper;
+import sentimentanalysis.mapper.SentimentAnalysisMapperModule;
 import sentimentanalysis.reducer.SentimentAnalysisReducer;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
  * This class handles:
  *  - Running the hadoop tasks
  */
-public class Project {
+public class SentimentAnalysis {
+
+    private String aspectWordFilePath = "resources/input/asepctwords-test.json";
 
     public static void main(String[] args) throws
             IOException,
@@ -28,10 +31,14 @@ public class Project {
         Configuration configuration = new Configuration();
 
         // Set up our dependency injection modules
-        Guice.createInjector(new MapperModule());
+        Guice.createInjector(new SentimentAnalysisMapperModule());
 
-        Job job = Job.getInstance(configuration, "project");
-        job.setJarByClass(Project.class);
+        // Parse the file containing the aspect words into a List
+        // that we can consumer further in the process
+        File aspectWordFile = new File("");
+
+        Job job = Job.getInstance(configuration, "sentimentanalysis");
+        job.setJarByClass(SentimentAnalysis.class);
         job.setMapperClass(SentimentAnalysisMapper.class);
         job.setReducerClass(SentimentAnalysisReducer.class);
         job.setOutputKeyClass(Text.class);

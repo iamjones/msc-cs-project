@@ -5,7 +5,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mrunit.mapreduce.ReduceDriver;
 import org.junit.Before;
 
-public class WebContentReducerTest {
+public class SentimentAnalysisReducerTest {
 
     private ReduceDriver<Text, Text, Text, DoubleWritable> reduceDriver;
 

@@ -5,7 +5,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mrunit.mapreduce.MapDriver;
 import org.junit.Before;
 
-public class WebContentMapperTest {
+public class SentimentAnalysisMapperTest {
 
     private MapDriver<LongWritable, Text, Text, Text> webContentMapper;
 

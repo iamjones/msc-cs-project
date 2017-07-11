@@ -10,7 +10,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import sentimentanalysis.mapper.MapperModule;
+import sentimentanalysis.mapper.SentimentAnalysisMapperModule;
 
 import java.io.IOException;
 
@@ -30,7 +30,7 @@ public class DictionaryBuilder {
         Configuration configuration = new Configuration();
 
         // Set up our dependency injection modules
-        Guice.createInjector(new MapperModule());
+        Guice.createInjector(new SentimentAnalysisMapperModule());
 
         Job job = Job.getInstance(configuration, "dictionarybuilder");
         job.setJarByClass(DictionaryBuilder.class);

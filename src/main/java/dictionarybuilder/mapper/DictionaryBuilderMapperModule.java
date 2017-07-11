@@ -4,12 +4,10 @@ import com.google.inject.AbstractModule;
 import domain.punctuation.Punctuation;
 import domain.stopwords.StopWords;
 
-import static jdk.nashorn.internal.objects.NativeFunction.bind;
-
 /**
  * Sets up dependency injection for the DictionaryBuilderMapper class.
  */
-public class DictionaryMapperModule extends AbstractModule {
+public class DictionaryBuilderMapperModule extends AbstractModule {
 
     @Override
     protected void configure() {
