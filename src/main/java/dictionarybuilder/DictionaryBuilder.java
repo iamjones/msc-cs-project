@@ -49,10 +49,6 @@ public class DictionaryBuilder {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 
-        if (args.length == 0) {
-            throw new IllegalArgumentException("Arguments are needed to run a job.");
-        }
-
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
 

@@ -26,6 +26,12 @@ public class StopWords {
         "yours","yourself","yourselves"
     };
 
+    private List<String> stopwordsList;
+
+    public StopWords() {
+        this.stopwordsList = Arrays.asList(this.stopwords);
+    }
+
     /**
      * Takes a document and removes all the stop words that it contains.
      * Returns a list of words that are not found in our stop word list.
@@ -36,10 +42,9 @@ public class StopWords {
     public List<String> removeStopWords(List<String> document) {
 
         List<String> nonStopWords = new ArrayList<>();
-        List<String> stopWords = Arrays.asList(this.stopwords);
 
         for (String word : document) {
-            if (!stopWords.contains(word.toLowerCase())) {
+            if (!this.stopwordsList.contains(word.toLowerCase())) {
                 nonStopWords.add(word);
             }
         }
