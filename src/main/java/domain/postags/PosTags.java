@@ -71,4 +71,24 @@ public class PosTags {
 
         return adverbs.contains(parts[1]);
     }
+
+    /**
+     * Checks if the word has been classified as a verb.
+     * @param word String
+     * @return boolean
+     */
+    public boolean isVerb(String word) {
+
+        List<String> verbs = new ArrayList<>();
+        verbs.add("VB");
+        verbs.add("VBD");
+        verbs.add("VBG");
+        verbs.add("VBN");
+        verbs.add("VBP");
+        verbs.add("VBZ");
+
+        String[] parts = word.split("_");
+
+        return verbs.contains(parts[1]);
+    }
 }

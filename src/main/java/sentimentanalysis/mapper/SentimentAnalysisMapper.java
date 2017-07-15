@@ -3,6 +3,7 @@ package sentimentanalysis.mapper;
 import domain.aspectwords.AspectWordsParser;
 import domain.entity.AspectWords;
 import domain.entity.Review;
+import domain.postags.PosTags;
 import domain.punctuation.Punctuation;
 import domain.stopwords.StopWords;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
@@ -37,6 +38,8 @@ public class SentimentAnalysisMapper extends org.apache.hadoop.mapreduce.Mapper<
 
     private Punctuation punctuation;
 
+    private PosTags posTags;
+
     public SentimentAnalysisMapper() {
 
     }
@@ -45,6 +48,7 @@ public class SentimentAnalysisMapper extends org.apache.hadoop.mapreduce.Mapper<
     public void setup(Context context) {
         this.stopWords   = new StopWords();
         this.punctuation = new Punctuation();
+        this.posTags     = new PosTags();
     }
 
     @Override
@@ -77,15 +81,24 @@ public class SentimentAnalysisMapper extends org.apache.hadoop.mapreduce.Mapper<
             // Tag each word in each sentence.
             // If there is not an adjective or advert+adjective pair then discard the sentence
             // Otherwise keep it for further processing
-            data.forEach((x, y) -> {
+            for (String s : data.values()) {
 
-                String sentenceTagged = tagger.tagTokenizedString(y);
+                // We don't care about sentences that do not contain aspect words
+
+
+                String sentenceTagged = tagger.tagTokenizedString(s);
 
                 String[] taggedWords = sentenceTagged.split(" ");
-            });
 
+                for (String taggedWord : taggedWords) {
+                    if (this.posTags.isAdverb(taggedWord) ||
+                        this.posTags.isVerb(taggedWord)) {
+                        context.write(new Text(s), new Text(s));
+                    }
+                }
+            }
 
-        } catch(IOException e) {
+        } catch (IOException | InterruptedException e) {
             // @TODO - log this somewhere useful
             System.out.println(e.getMessage());
         }
