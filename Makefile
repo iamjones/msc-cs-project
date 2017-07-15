@@ -4,6 +4,9 @@ inputDir = src/main/resources/input/
 # Output directory for running locally
 outputDir = src/main/resources/output-$$RANDOM/
 
+# Aspect words file for running locally
+aspectWordsFile = src/main/resources/aspectwords/aspectwords-test.json
+
 # Set a default value for the test job
 c = 10
 
@@ -29,7 +32,7 @@ build-dictionary: build
 # - make build-sentiment-analyser-test c=25
 # - make build-sentiment-analyser-test c=100
 build-sentiment-analyser-test: build
-	hadoop jar target/msc-cs-project.jar sentimentanalysis.SentimentAnalysis $(inputDir)$(c)_reviews.json $(outputDir)
+	hadoop jar target/msc-cs-project.jar sentimentanalysis.SentimentAnalysis $(inputDir)$(c)_reviews.json $(outputDir) $(aspectWordsFile)
 
 # Run the dictionary builder job locally on the full data set
 build-sentiment-analyser: build

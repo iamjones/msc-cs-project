@@ -3,6 +3,7 @@ package sentimentanalysis;
 import com.google.inject.Guice;
 import domain.aspectwords.AspectWordsParser;
 import domain.entity.AspectWords;
+import domain.validation.TaskParameterValidator;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -27,6 +28,17 @@ public class SentimentAnalysis {
             InterruptedException,
             ClassNotFoundException {
 
+        TaskParameterValidator taskParameterValidator = new TaskParameterValidator();
+
+        // Check if an input path has been supplied
+        taskParameterValidator.checkInputPath(args);
+
+        // Check if an output path has been supplied
+        taskParameterValidator.checkOutputPath(args);
+
+        // If is a path to the aspect words file has been supplied
+        taskParameterValidator.checkAspectWordsPath(args);
+
         Configuration configuration = new Configuration();
 
         // Set up our dependency injection modules
@@ -34,7 +46,7 @@ public class SentimentAnalysis {
 
         // Parse the file containing the aspect words into a List
         // that we can consumer further in the process
-        String aspectWordFilePath = "src/main/resources/aspectwords/aspectwords-test.json";
+        String aspectWordFilePath = args[2];
         AspectWordsParser aspectWordsParser = new AspectWordsParser();
         AspectWords aspectWords = aspectWordsParser.parse(aspectWordFilePath);
 

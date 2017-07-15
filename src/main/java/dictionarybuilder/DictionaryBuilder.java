@@ -3,6 +3,7 @@ package dictionarybuilder;
 import com.google.inject.Guice;
 import dictionarybuilder.mapper.DictionaryBuilderMapper;
 import dictionarybuilder.reducer.DictionaryBuilderReducer;
+import domain.validation.TaskParameterValidator;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -26,6 +27,14 @@ public class DictionaryBuilder {
         IOException,
         InterruptedException,
         ClassNotFoundException {
+
+        TaskParameterValidator taskParameterValidator = new TaskParameterValidator();
+
+        // Check if an input path has been supplied
+        taskParameterValidator.checkInputPath(args);
+
+        // Check if an output path has been supplied
+        taskParameterValidator.checkOutputPath(args);
 
         Configuration configuration = new Configuration();
 
