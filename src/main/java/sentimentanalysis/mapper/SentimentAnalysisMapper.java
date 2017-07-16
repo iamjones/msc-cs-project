@@ -1,7 +1,6 @@
 package sentimentanalysis.mapper;
 
-import domain.aspectwords.AspectWordsParser;
-import domain.entity.AspectWords;
+import domain.aspectwords.AspectWordsMatcher;
 import domain.entity.Review;
 import domain.postags.PosTags;
 import domain.punctuation.Punctuation;
@@ -40,30 +39,31 @@ public class SentimentAnalysisMapper extends org.apache.hadoop.mapreduce.Mapper<
 
     private PosTags posTags;
 
+    private AspectWordsMatcher aspectWordsMatcher;
+
     public SentimentAnalysisMapper() {
 
     }
 
     @Override
     public void setup(Context context) {
-        this.stopWords   = new StopWords();
-        this.punctuation = new Punctuation();
-        this.posTags     = new PosTags();
+
+        Configuration configuration = context.getConfiguration();
+        String aspectWordFilePath   = configuration.get("aspectWordsFilePath");
+
+        this.stopWords          = new StopWords();
+        this.punctuation        = new Punctuation();
+        this.posTags            = new PosTags();
+        this.aspectWordsMatcher = new AspectWordsMatcher(aspectWordFilePath);
     }
 
     @Override
     protected void map(LongWritable key, Text value, Context context) {
 
         try {
-            Configuration configuration = context.getConfiguration();
-            String aspectWordFilePath   = configuration.get("aspectWordsFilePath");
 
             ObjectMapper objectMapper = new ObjectMapper();
             Review review = objectMapper.readValue(value.getBytes(), Review.class);
-
-            // Parse the file containing the aspect words into an AspectWords entity
-            AspectWordsParser aspectWordsParser = new AspectWordsParser();
-            AspectWords aspectWords = aspectWordsParser.parse(aspectWordFilePath);
 
             String[] sentences = review.getReviewText().split("\\.");
 
@@ -78,13 +78,12 @@ public class SentimentAnalysisMapper extends org.apache.hadoop.mapreduce.Mapper<
 
             MaxentTagger tagger = new MaxentTagger(this.taggerModelSrc);
 
-            // Tag each word in each sentence.
-            // If there is not an adjective or advert+adjective pair then discard the sentence
-            // Otherwise keep it for further processing
             for (String s : data.values()) {
 
                 // We don't care about sentences that do not contain aspect words
-
+                if (!this.aspectWordsMatcher.containsAspectWord(s)) {
+                    continue;
+                }
 
                 String sentenceTagged = tagger.tagTokenizedString(s);
 
@@ -93,7 +92,7 @@ public class SentimentAnalysisMapper extends org.apache.hadoop.mapreduce.Mapper<
                 for (String taggedWord : taggedWords) {
                     if (this.posTags.isAdverb(taggedWord) ||
                         this.posTags.isVerb(taggedWord)) {
-                        context.write(new Text(s), new Text(s));
+                        context.write(new Text(review.getAsin()), review);
                     }
                 }
             }
