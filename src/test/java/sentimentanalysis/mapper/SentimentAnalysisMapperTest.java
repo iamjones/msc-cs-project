@@ -1,5 +1,6 @@
 package sentimentanalysis.mapper;
 
+import domain.entity.ReviewWritable;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -12,7 +13,7 @@ import java.io.IOException;
 
 public class SentimentAnalysisMapperTest {
 
-    private MapDriver<LongWritable, Text, Text, Text> sentimentAnalysisMapper;
+    private MapDriver<LongWritable, Text, Text, ReviewWritable> sentimentAnalysisMapper;
 
     private String testJson;
 
@@ -50,9 +51,23 @@ public class SentimentAnalysisMapperTest {
         LongWritable inputKey = new LongWritable(1);
         Text inputValue = new Text(testJson);
 
+        ReviewWritable expectedOne = new ReviewWritable(
+            new Text("0528881469"),
+            new Text("I thought the battery was good.I thought the screen was too small.I liked the size of the phone."),
+            new Text("thought battery good"),
+            new Text("thought battery good")
+        );
+
+        ReviewWritable expectedTwo = new ReviewWritable(
+            new Text("0528881469"),
+            new Text("I thought the battery was good.I thought the screen was too small.I liked the size of the phone."),
+            new Text("thought battery good"),
+            new Text("thought screen small")
+        );
+
         sentimentAnalysisMapper.withInput(inputKey, inputValue)
-            .withOutput(new Text("battery"),  new Text("I thought the battery was good"))
-            .withOutput(new Text("screen"),  new Text("I thought the screen was too small."))
+            .withOutput(new Text("0528881469"),  expectedOne)
+            .withOutput(new Text("0528881469"),  expectedTwo)
             .runTest();
     }
 }

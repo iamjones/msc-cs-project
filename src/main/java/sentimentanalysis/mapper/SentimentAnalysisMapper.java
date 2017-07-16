@@ -2,6 +2,7 @@ package sentimentanalysis.mapper;
 
 import domain.aspectwords.AspectWordsMatcher;
 import domain.entity.Review;
+import domain.entity.ReviewWritable;
 import domain.postags.PosTags;
 import domain.punctuation.Punctuation;
 import domain.stopwords.StopWords;
@@ -27,7 +28,7 @@ import java.util.logging.Logger;
  *
  *
  */
-public class SentimentAnalysisMapper extends org.apache.hadoop.mapreduce.Mapper<LongWritable, Text, Text, Text> {
+public class SentimentAnalysisMapper extends org.apache.hadoop.mapreduce.Mapper<LongWritable, Text, Text, ReviewWritable> {
 
     private Logger logger = Logger.getLogger("SentimentAnalysisMapper");
 
@@ -92,7 +93,15 @@ public class SentimentAnalysisMapper extends org.apache.hadoop.mapreduce.Mapper<
                 for (String taggedWord : taggedWords) {
                     if (this.posTags.isAdverb(taggedWord) ||
                         this.posTags.isVerb(taggedWord)) {
-                        context.write(new Text(review.getAsin()), review);
+
+                        ReviewWritable reviewWritable = new ReviewWritable(
+                            new Text(review.getAsin()),
+                            new Text(review.getReviewText()),
+                            new Text(s),
+                            new Text(s)
+                        );
+
+                        context.write(new Text(review.getAsin()), reviewWritable);
                     }
                 }
             }
