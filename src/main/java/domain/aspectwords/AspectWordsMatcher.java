@@ -2,6 +2,9 @@ package domain.aspectwords;
 
 import domain.entity.AspectWords;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Holds methods to help identify if documents contains an aspect word.
  */
@@ -22,19 +25,23 @@ public class AspectWordsMatcher {
     }
 
     /**
-     * Takes a document and check whether it contains an aspect word.
+     * Returns any aspect words that are found in the document. There could be more than
+     * one aspect word in the document so we need to return a List of them all.
      *
      * @param document String
-     * @return boolean
+     * @return List<String>
      */
-    public boolean containsAspectWord(String document) {
+    public List<String> getMatchedAspectWords(String document) {
 
-        for (String aspectWord : this.aspectWords.getAspectWords()) {
-            if (document.contains(aspectWord)) {
-                return true;
+        List<String> aspectWords = new ArrayList<>();
+        List<String> aw          = this.aspectWords.getAspectWords();
+
+        for (String word : document.split(" ")) {
+            if (aw.contains(word)) {
+                aspectWords.add(word);
             }
         }
 
-        return false;
+        return aspectWords;
     }
 }

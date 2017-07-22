@@ -1,17 +1,16 @@
 package sentimentanalysis;
 
 import com.google.inject.Guice;
+import domain.entity.ReviewWritable;
 import domain.validation.TaskParameterValidator;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import sentimentanalysis.mapper.SentimentAnalysisMapper;
 import sentimentanalysis.mapper.SentimentAnalysisMapperModule;
-import sentimentanalysis.reducer.SentimentAnalysisReducer;
 
 import java.io.IOException;
 
@@ -47,9 +46,9 @@ public class SentimentAnalysis {
         Job job = Job.getInstance(configuration, "sentimentanalysis");
         job.setJarByClass(SentimentAnalysis.class);
         job.setMapperClass(SentimentAnalysisMapper.class);
-        job.setReducerClass(SentimentAnalysisReducer.class);
+//        job.setReducerClass(SentimentAnalysisReducer.class);
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(IntWritable.class);
+        job.setOutputValueClass(ReviewWritable.class);
 
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));

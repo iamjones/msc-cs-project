@@ -1,6 +1,7 @@
 package dictionarybuilder.mapper;
 
 import domain.entity.Review;
+import domain.postags.PosTags;
 import domain.punctuation.Punctuation;
 import domain.stopwords.StopWords;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
@@ -12,8 +13,6 @@ import org.apache.htrace.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
 
 /**
@@ -28,6 +27,8 @@ public class DictionaryBuilderMapper extends Mapper<LongWritable, Text, Text, In
 
     private Punctuation punctuation;
 
+    private PosTags posTags;
+
     final private String taggerModelSrc = "src/main/resources/tagger/english.tagger";
 
     public DictionaryBuilderMapper() {
@@ -38,6 +39,7 @@ public class DictionaryBuilderMapper extends Mapper<LongWritable, Text, Text, In
     public void setup(Context context) {
         this.stopWords   = new StopWords();
         this.punctuation = new Punctuation();
+        this.posTags     = new PosTags();
     }
 
     @Override
@@ -55,20 +57,13 @@ public class DictionaryBuilderMapper extends Mapper<LongWritable, Text, Text, In
             MaxentTagger tagger = new MaxentTagger(this.taggerModelSrc);
             String sentenceTagged = tagger.tagTokenizedString(String.join(" ", reviewNoStopWords));
 
-//            @TODO - cache the tagged words as the tagger is slow over large data sets
-
-            Map<String, String> taggedWords = new HashMap<>();
-
             for (String word : sentenceTagged.split(" ")) {
 
-                String wordTrim = word.trim().toLowerCase();
+                String[] parts = word.split("_");
 
-                // Ignore word if word is empty
-                if (wordTrim.isEmpty()) {
-                    continue;
-                }
+                String wordTrim = parts[0].trim().toLowerCase();
 
-                // Ignore word if word is two or less characters
+                // Ignore word if word is less than 3 characters
                 if (wordTrim.length() < 3) {
                     continue;
                 }
@@ -78,14 +73,12 @@ public class DictionaryBuilderMapper extends Mapper<LongWritable, Text, Text, In
                     continue;
                 }
 
-                String[] parts = wordTrim.split("_");
-
                 // Ignore if the word is not a Noun
-                if (!parts[1].equals("nn")) {
+                if (!this.posTags.isNoun(word)) {
                     continue;
                 }
 
-                context.write(new Text(parts[0]), new IntWritable(1));
+                context.write(new Text(wordTrim), new IntWritable(1));
             }
 
         } catch (IOException | InterruptedException e) {

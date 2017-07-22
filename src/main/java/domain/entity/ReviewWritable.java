@@ -20,6 +20,8 @@ public class ReviewWritable implements Writable {
 
     private Text cleanSentence;
 
+    private Text aspectWord;
+
     /**
      * Default constructor which instantiates each object as blank objects.
      */
@@ -28,6 +30,7 @@ public class ReviewWritable implements Writable {
         this.reviewText    = new Text();
         this.sentence      = new Text();
         this.cleanSentence = new Text();
+        this.aspectWord    = new Text();
     }
 
     /**
@@ -42,12 +45,14 @@ public class ReviewWritable implements Writable {
         Text asin,
         Text reviewText,
         Text sentence,
-        Text cleanSentence
+        Text cleanSentence,
+        Text aspectWord
     ) {
         this.asin          = asin;
         this.reviewText    = reviewText;
         this.sentence      = sentence;
         this.cleanSentence = cleanSentence;
+        this.aspectWord    = aspectWord;
     }
 
     /**
@@ -60,6 +65,7 @@ public class ReviewWritable implements Writable {
         this.reviewText.write(dataOutput);
         this.sentence.write(dataOutput);
         this.cleanSentence.write(dataOutput);
+        this.aspectWord.write(dataOutput);
     }
 
     /**
@@ -72,6 +78,7 @@ public class ReviewWritable implements Writable {
         this.reviewText.readFields(dataInput);
         this.sentence.readFields(dataInput);
         this.cleanSentence.readFields(dataInput);
+        this.aspectWord.readFields(dataInput);
     }
 
     public Text getAsin() {
@@ -104,5 +111,13 @@ public class ReviewWritable implements Writable {
 
     public void setCleanSentence(Text cleanSentence) {
         this.cleanSentence = cleanSentence;
+    }
+
+    public Text getAspectWord() {
+        return aspectWord;
+    }
+
+    public void setAspectWord(Text aspectWord) {
+        this.aspectWord = aspectWord;
     }
 }

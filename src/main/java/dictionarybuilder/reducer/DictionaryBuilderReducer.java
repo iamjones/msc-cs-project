@@ -27,12 +27,14 @@ public class DictionaryBuilderReducer extends Reducer<Text, IntWritable, Text, I
         IOException,
         InterruptedException {
 
-        int totalOccurrances = 0;
+        int totalOccurrences = 0;
 
         for (IntWritable v : values) {
-            totalOccurrances += v.get();
+            totalOccurrences += v.get();
         }
 
-        context.write(key, new IntWritable(totalOccurrances));
+        if (totalOccurrences >= 3) {
+            context.write(key, new IntWritable(totalOccurrences));
+        }
     }
 }

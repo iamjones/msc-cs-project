@@ -16,6 +16,30 @@ public class PosTagsTest {
     }
 
     @Test
+    public void it_should_classify_a_noun_as_true() {
+
+        assertThat(this.posTags.isNoun("word_NN"), is(true));
+    }
+
+    @Test
+    public void it_should_classify_a_noun_plural_as_true() {
+
+        assertThat(this.posTags.isNoun("word_NNS"), is(true));
+    }
+
+    @Test
+    public void it_should_classify_a_noun_proper_noun_as_true() {
+
+        assertThat(this.posTags.isNoun("word_NNP"), is(true));
+    }
+
+    @Test
+    public void it_should_classify_a_noun_proper_noun_plural_as_true() {
+
+        assertThat(this.posTags.isNoun("word_NNPS"), is(true));
+    }
+
+    @Test
     public void it_should_classify_an_adverb_as_true() {
 
         assertThat(this.posTags.isAdverb("word_RB"), is(true));
@@ -73,5 +97,25 @@ public class PosTagsTest {
     public void it_should_classify_a_vbz_verb_as_true() {
 
         assertThat(this.posTags.isVerb("word_VBZ"), is(true));
+    }
+
+    @Test
+    public void it_should_return_true_if_an_adverb_is_within_range_of_the_aspect_word() {
+
+        String document = "The_DT battery_NN was_VBD very_RB good_JJ";
+        String aspectWord = "battery";
+        int nGram = 5;
+
+        assertThat(this.posTags.isAdverbInRangeOfAspectWord(document, aspectWord, nGram), is(true));
+    }
+
+    @Test
+    public void it_should_return_false_if_an_adverb_is_not_within_range_of_the_aspect_word() {
+
+        String document = "The_DT battery_NN was_VBD good_JJ good_JJ good_JJ good_JJ good_JJ very_RB";
+        String aspectWord = "battery";
+        int nGram = 5;
+
+        assertThat(this.posTags.isAdverbInRangeOfAspectWord(document, aspectWord, nGram), is(false));
     }
 }

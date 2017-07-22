@@ -1,6 +1,7 @@
 package domain.postags;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,25 @@ public class PosTags {
     }
 
     /**
-     * Checks if a word has been classified as an adverb.
+     * Checks if a word has been classified as a Noun.
+     * @param word String
+     * @return boolean
+     */
+    public boolean isNoun(String word) {
+
+        List<String> adverbs = new ArrayList<>();
+        adverbs.add("NN");
+        adverbs.add("NNS");
+        adverbs.add("NNP");
+        adverbs.add("NNPS");
+
+        String[] parts = word.split("_");
+
+        return adverbs.contains(parts[1]);
+    }
+
+    /**
+     * Checks if a word has been classified as an Adverb.
      * @param word String
      * @return boolean
      */
@@ -73,7 +92,7 @@ public class PosTags {
     }
 
     /**
-     * Checks if the word has been classified as a verb.
+     * Checks if the word has been classified as a Verb.
      * @param word String
      * @return boolean
      */
@@ -90,5 +109,28 @@ public class PosTags {
         String[] parts = word.split("_");
 
         return verbs.contains(parts[1]);
+    }
+
+    public boolean isAdverbInRangeOfAspectWord(String document, String aspectWord, int nGram) {
+
+        String[] d = document.split(aspectWord);
+
+        for (String section : d) {
+            String[] words       = section.split(" ");
+
+            if (words.length > nGram) {
+                // Cap the string to five words
+                words = Arrays.copyOfRange(words, 0, nGram - 1);
+            }
+
+            // Check the five (or less) words for an adverb
+            for (String w : words) {
+                if (this.isAdverb(w)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

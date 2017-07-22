@@ -3,6 +3,9 @@ package domain.aspectwords;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -16,18 +19,26 @@ public class AspectWordsMatcherTest {
     }
 
     @Test
-    public void it_should_identify_document_as_containing_an_aspect_word() {
+    public void it_should_find_and_return_the_aspect_word() {
 
-        String document = "The aspect word is battery";
+        String document = "The battery was very good";
 
-        assertThat(this.aspectWordsMatcher.containsAspectWord(document), is(true));
+        List<String> expected = new ArrayList<>();
+        expected.add("battery");
+
+        assertThat(this.aspectWordsMatcher.getMatchedAspectWords(document), is(expected));
     }
 
     @Test
-    public void it_should_identify_document_as_not_containing_an_aspect_word() {
+    public void it_should_find_and_return_multiple_aspect_words() {
 
-        String document = "Does not contain an aspect word.";
+        String document = "The battery screen and display was very good";
 
-        assertThat(this.aspectWordsMatcher.containsAspectWord(document), is(false));
+        List<String> expected = new ArrayList<>();
+        expected.add("battery");
+        expected.add("screen");
+        expected.add("display");
+
+        assertThat(this.aspectWordsMatcher.getMatchedAspectWords(document), is(expected));
     }
 }

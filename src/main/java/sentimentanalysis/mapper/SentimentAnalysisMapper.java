@@ -74,31 +74,31 @@ public class SentimentAnalysisMapper extends org.apache.hadoop.mapreduce.Mapper<
                 String sentenceNoPunc = this.punctuation.removeAllPunctuation(sentence);
                 List<String> sentenceNoStopWords = this.stopWords.removeStopWords(Arrays.asList(sentenceNoPunc.split(" ")));
 
-                data.put(sentence, String.join(" ", sentenceNoStopWords));
+                data.put(String.join(" ", sentenceNoStopWords), sentence);
             }
 
             MaxentTagger tagger = new MaxentTagger(this.taggerModelSrc);
 
-            for (String s : data.values()) {
+            for (String s : data.keySet()) {
 
-                // We don't care about sentences that do not contain aspect words
-                if (!this.aspectWordsMatcher.containsAspectWord(s)) {
+                // Get the aspect words that are included in the sentence
+                List<String> foundAspectWords = this.aspectWordsMatcher.getMatchedAspectWords(s);
+
+                // We don't need to process sentences that do not contain aspect words
+                if (foundAspectWords.size() == 0) {
                     continue;
                 }
 
                 String sentenceTagged = tagger.tagTokenizedString(s);
 
-                String[] taggedWords = sentenceTagged.split(" ");
-
-                for (String taggedWord : taggedWords) {
-                    if (this.posTags.isAdverb(taggedWord) ||
-                        this.posTags.isVerb(taggedWord)) {
-
+                for (String aspectWord : foundAspectWords) {
+                    if (this.posTags.isAdverbInRangeOfAspectWord(sentenceTagged, aspectWord, 5)) {
                         ReviewWritable reviewWritable = new ReviewWritable(
                             new Text(review.getAsin()),
                             new Text(review.getReviewText()),
+                            new Text(data.get(s)),
                             new Text(s),
-                            new Text(s)
+                            new Text(aspectWord)
                         );
 
                         context.write(new Text(review.getAsin()), reviewWritable);

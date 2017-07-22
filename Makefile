@@ -19,6 +19,7 @@ build:
 # - make build-dictionary-test c=10
 # - make build-dictionary-test c=25
 # - make build-dictionary-test c=100
+# - make build-dictionary-test c=5000
 build-dictionary-test: build
 	hadoop jar target/msc-cs-project.jar dictionarybuilder.DictionaryBuilder $(inputDir)$(c)_reviews.json $(outputDir)
 
@@ -31,6 +32,7 @@ build-dictionary: build
 # - make build-sentiment-analyser-test c=10
 # - make build-sentiment-analyser-test c=25
 # - make build-sentiment-analyser-test c=100
+# - make build-sentiment-analyser-test c=5000
 build-sentiment-analyser-test: build
 	hadoop jar target/msc-cs-project.jar sentimentanalysis.SentimentAnalysis $(inputDir)$(c)_reviews.json $(outputDir) $(aspectWordsFile)
 

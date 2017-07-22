@@ -67,7 +67,7 @@ public class DictionaryBuilderMapperTest {
 
         LongWritable inputKey = new LongWritable(1);
         Text inputValue = new Text("{"
-            + "\"reviewText\": \"Screen        Keyboard\""
+            + "\"reviewText\": \"Screen        Keyboard u io\""
             + "}");
 
         dictionaryMapper.withInput(inputKey, inputValue)
