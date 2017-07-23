@@ -1,4 +1,4 @@
-package dictionarybuilder.reducer;
+package aspectdiscovery.reducer;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -11,14 +11,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class DictionaryBuilderReducerTest {
+public class AspectDiscoveryReducerTest {
 
     private ReduceDriver<Text, IntWritable, Text, IntWritable> reduceDriver;
 
     @Before
     public void setup() {
 
-        Reducer dictionaryReducer = new DictionaryBuilderReducer();
+        Reducer dictionaryReducer = new AspectDiscoveryReducer();
         reduceDriver = ReduceDriver.newReduceDriver(dictionaryReducer);
     }
 

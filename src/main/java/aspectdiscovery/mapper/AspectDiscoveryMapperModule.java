@@ -1,13 +1,13 @@
-package dictionarybuilder.mapper;
+package aspectdiscovery.mapper;
 
 import com.google.inject.AbstractModule;
 import domain.punctuation.Punctuation;
 import domain.stopwords.StopWords;
 
 /**
- * Sets up dependency injection for the DictionaryBuilderMapper class.
+ * Sets up dependency injection for the AspectDiscoveryMapper class.
  */
-public class DictionaryBuilderMapperModule extends AbstractModule {
+public class AspectDiscoveryMapperModule extends AbstractModule {
 
     @Override
     protected void configure() {

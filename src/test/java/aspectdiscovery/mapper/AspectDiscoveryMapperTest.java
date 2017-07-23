@@ -1,4 +1,4 @@
-package dictionarybuilder.mapper;
+package aspectdiscovery.mapper;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-public class DictionaryBuilderMapperTest {
+public class AspectDiscoveryMapperTest {
 
     private MapDriver<LongWritable, Text, Text, IntWritable> dictionaryMapper;
 
@@ -17,7 +17,7 @@ public class DictionaryBuilderMapperTest {
 
     @Before
     public void setUp() {
-        DictionaryBuilderMapper mapper = new DictionaryBuilderMapper();
+        AspectDiscoveryMapper mapper = new AspectDiscoveryMapper();
         dictionaryMapper = MapDriver.newMapDriver(mapper);
 
         testJson = "{"

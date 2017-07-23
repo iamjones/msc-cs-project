@@ -1,4 +1,4 @@
-package dictionarybuilder.reducer;
+package aspectdiscovery.reducer;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -6,7 +6,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 
-public class DictionaryBuilderReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+public class AspectDiscoveryReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
 
     /**
      * This reducer should combine all data with the same key into a key-value

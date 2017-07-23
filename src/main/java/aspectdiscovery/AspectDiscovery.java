@@ -1,8 +1,8 @@
-package dictionarybuilder;
+package aspectdiscovery;
 
 import com.google.inject.Guice;
-import dictionarybuilder.mapper.DictionaryBuilderMapper;
-import dictionarybuilder.reducer.DictionaryBuilderReducer;
+import aspectdiscovery.mapper.AspectDiscoveryMapper;
+import aspectdiscovery.reducer.AspectDiscoveryReducer;
 import domain.validation.TaskParameterValidator;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -19,7 +19,7 @@ import java.io.IOException;
  * This is the miain configuration and runnable method for the
  * hadoop job.
  */
-public class DictionaryBuilder {
+public class AspectDiscovery {
 
     public static void main(
         String[] args
@@ -42,10 +42,10 @@ public class DictionaryBuilder {
         Guice.createInjector(new SentimentAnalysisMapperModule());
 
         Job job = Job.getInstance(configuration, "dictionarybuilder");
-        job.setJarByClass(DictionaryBuilder.class);
-        job.setMapperClass(DictionaryBuilderMapper.class);
+        job.setJarByClass(AspectDiscovery.class);
+        job.setMapperClass(AspectDiscoveryMapper.class);
 //        job.setCombinerClass();
-        job.setReducerClass(DictionaryBuilderReducer.class);
+        job.setReducerClass(AspectDiscoveryReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 

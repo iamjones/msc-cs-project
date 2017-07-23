@@ -1,4 +1,4 @@
-package dictionarybuilder.mapper;
+package aspectdiscovery.mapper;
 
 import domain.entity.Review;
 import domain.postags.PosTags;
@@ -21,7 +21,7 @@ import java.util.List;
  * Take the review body and remove any stop words and punctuation.
  * Split the remaining review body into words.
  */
-public class DictionaryBuilderMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+public class AspectDiscoveryMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
 
     private StopWords stopWords;
 
@@ -31,7 +31,7 @@ public class DictionaryBuilderMapper extends Mapper<LongWritable, Text, Text, In
 
     final private String taggerModelSrc = "src/main/resources/tagger/english.tagger";
 
-    public DictionaryBuilderMapper() {
+    public AspectDiscoveryMapper() {
 
     }
 

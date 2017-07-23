@@ -14,17 +14,17 @@ c = 10
 build:
 	mvn package
 
-# Run the dictionary builder job locally on a small set of real data
+# Run the aspect discovery job locally on a small set of real data
 # For example
-# - make build-dictionary-test c=10
-# - make build-dictionary-test c=25
-# - make build-dictionary-test c=100
-build-dictionary-test: build
-	hadoop jar target/msc-cs-project.jar dictionarybuilder.DictionaryBuilder $(inputDir)$(c)_reviews.json $(outputDir)aspects-$$RANDOM
+# - make build-aspect-discovery-test c=10
+# - make build-aspect-discovery-test c=25
+# - make build-aspect-discovery-test c=100
+build-aspect-discovery-test: build
+	hadoop jar target/msc-cs-project.jar aspectdiscovery.AspectDiscovery $(inputDir)$(c)_reviews.json $(outputDir)aspects-$$RANDOM
 
-# Run the dictionary builder job locally on the full data set
-build-dictionary: build
-	hadoop jar target/msc-cs-project.jar dictionarybuilder.DictionaryBuilder $(inputDir)5000_reviews.json $(outputDir)aspects-$$RANDOM
+# Run the aspect discovery job locally on the full data set
+build-aspect-discovery: build
+	hadoop jar target/msc-cs-project.jar aspectdiscovery.AspectDiscovery $(inputDir)5000_reviews.json $(outputDir)aspects-$$RANDOM
 
 # Run the sentiment analyser job locally on a small set of real data
 # For example

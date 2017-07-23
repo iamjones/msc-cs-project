@@ -46,13 +46,11 @@ public class SentiWordNetSentimentAnalysis implements SentimentAnalysis {
 
                 String[] parts  = line.trim().split("\t");
                 String wordType = parts[0];
-                String[] terms   = parts[4].trim().split(" ");
+                String[] terms  = parts[4].trim().split(" ");
 
                 for (String term : terms) {
-                    Double score = Double.parseDouble(parts[2]) - Double.parseDouble(parts[3]);
-
-                    String[] termPos = term.trim().split("#");
-
+                    Double score       = Double.parseDouble(parts[2]) - Double.parseDouble(parts[3]);
+                    String[] termPos   = term.trim().split("#");
                     String termAndType = termPos[0] + "-" + wordType;
 
                     if (this.scoredWords.containsKey(termAndType)) {
