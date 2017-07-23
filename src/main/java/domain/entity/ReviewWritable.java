@@ -120,4 +120,12 @@ public class ReviewWritable implements Writable {
     public void setAspectWord(Text aspectWord) {
         this.aspectWord = aspectWord;
     }
+
+    public String toString() {
+        return "Asin: " + this.getAsin() + ", \n"
+            + "Review Text: " + this.getReviewText() + ", \n"
+            + "Sentence: " + this.getSentence() + ", \n"
+            + "Clean Sentence: " + this.getCleanSentence() + ", \n"
+            + "Aspect Word: " + this.getAspectWord() + "\n";
+    }
 }

@@ -88,6 +88,10 @@ public class PosTags {
 
         String[] parts = word.split("_");
 
+        if (parts.length < 2) {
+            return false;
+        }
+
         return adverbs.contains(parts[1]);
     }
 

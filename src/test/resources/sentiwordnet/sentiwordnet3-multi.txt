@@ -1,0 +1,4 @@
+# This is a comment and should be ignored
+# POS	ID	PosScore	NegScore	SynsetTerms	Gloss
+a	00028280	0	0	granted#1 given#1	acknowledged as a supposition; "given the engine's condition, it is a wonder that it started"
+a	00028867	0	0.375	unvalued#1 unsung#2 unappreciated#2	having value that is not acknowledged

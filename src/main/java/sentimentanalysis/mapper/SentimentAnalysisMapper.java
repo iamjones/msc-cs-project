@@ -11,6 +11,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.htrace.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -28,7 +29,7 @@ import java.util.logging.Logger;
  *
  *
  */
-public class SentimentAnalysisMapper extends org.apache.hadoop.mapreduce.Mapper<LongWritable, Text, Text, ReviewWritable> {
+public class SentimentAnalysisMapper extends Mapper<LongWritable, Text, Text, ReviewWritable> {
 
     private Logger logger = Logger.getLogger("SentimentAnalysisMapper");
 
