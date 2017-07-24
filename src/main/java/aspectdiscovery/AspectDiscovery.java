@@ -1,6 +1,5 @@
 package aspectdiscovery;
 
-import com.google.inject.Guice;
 import aspectdiscovery.mapper.AspectDiscoveryMapper;
 import aspectdiscovery.reducer.AspectDiscoveryReducer;
 import domain.validation.TaskParameterValidator;
@@ -11,7 +10,6 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import sentimentanalysis.mapper.SentimentAnalysisMapperModule;
 
 import java.io.IOException;
 
@@ -39,7 +37,7 @@ public class AspectDiscovery {
         Configuration configuration = new Configuration();
 
         // Set up our dependency injection modules
-        Guice.createInjector(new SentimentAnalysisMapperModule());
+//        Guice.createInjector(new SentimentAnalysisMapperModule());
 
         Job job = Job.getInstance(configuration, "dictionarybuilder");
         job.setJarByClass(AspectDiscovery.class);

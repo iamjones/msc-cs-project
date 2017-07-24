@@ -53,7 +53,7 @@ public class AspectDiscoveryMapper extends Mapper<LongWritable, Text, Text, IntW
             List<String> words             = Arrays.asList(reviewNoPunctuation.split(" "));
             List<String> reviewNoStopWords = this.stopWords.removeStopWords(words);
 
-            String sentenceTagged = tagger.tagTokenizedString(String.join(" ", reviewNoStopWords));
+            String sentenceTagged = this.tagger.tagTokenizedString(String.join(" ", reviewNoStopWords));
 
             for (String word : sentenceTagged.split(" ")) {
 

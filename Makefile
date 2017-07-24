@@ -36,4 +36,5 @@ build-sentiment-analyser-test: build
 
 # Run the dictionary builder job locally on the full data set
 build-sentiment-analyser: build
+	./elasticsearch.sh
 	hadoop jar target/msc-cs-project.jar sentimentanalysis.SentimentAnalysis $(inputDir)5000_reviews.json $(outputDir)sentiment-$$RANDOM $(aspectWordsFile)

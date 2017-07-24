@@ -43,6 +43,8 @@ public class SentimentAnalysisMapper extends Mapper<LongWritable, Text, Text, Re
 
     private AspectWordsMatcher aspectWordsMatcher;
 
+    private MaxentTagger tagger;
+
     public SentimentAnalysisMapper() {
 
     }
@@ -57,6 +59,7 @@ public class SentimentAnalysisMapper extends Mapper<LongWritable, Text, Text, Re
         this.punctuation        = new Punctuation();
         this.posTags            = new PosTags();
         this.aspectWordsMatcher = new AspectWordsMatcher(aspectWordFilePath);
+        this.tagger             = new MaxentTagger(this.taggerModelSrc);
     }
 
     @Override
@@ -78,8 +81,6 @@ public class SentimentAnalysisMapper extends Mapper<LongWritable, Text, Text, Re
                 data.put(String.join(" ", sentenceNoStopWords), sentence);
             }
 
-            MaxentTagger tagger = new MaxentTagger(this.taggerModelSrc);
-
             for (String s : data.keySet()) {
 
                 // Get the aspect words that are included in the sentence
@@ -90,7 +91,7 @@ public class SentimentAnalysisMapper extends Mapper<LongWritable, Text, Text, Re
                     continue;
                 }
 
-                String sentenceTagged = tagger.tagTokenizedString(s);
+                String sentenceTagged = this.tagger.tagTokenizedString(s);
 
                 for (String aspectWord : foundAspectWords) {
                     if (this.posTags.isAdverbInRangeOfAspectWord(sentenceTagged, aspectWord, 5)) {

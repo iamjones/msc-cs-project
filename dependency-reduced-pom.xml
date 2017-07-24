@@ -56,6 +56,7 @@
     <log4j.version>2.7</log4j.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <hadoop.version>2.6.0</hadoop.version>
+    <elasticsearch-hadoop.version>6.0.0-alpha-2</elasticsearch-hadoop.version>
     <maven.compiler.source>1.8</maven.compiler.source>
   </properties>
 </project>
