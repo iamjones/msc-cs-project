@@ -29,17 +29,16 @@ public class AspectDiscoveryMapper extends Mapper<LongWritable, Text, Text, IntW
 
     private PosTags posTags;
 
+    private MaxentTagger tagger;
+
     final private String taggerModelSrc = "src/main/resources/tagger/english.tagger";
-
-    public AspectDiscoveryMapper() {
-
-    }
 
     @Override
     public void setup(Context context) {
         this.stopWords   = new StopWords();
         this.punctuation = new Punctuation();
         this.posTags     = new PosTags();
+        this.tagger      = new MaxentTagger(this.taggerModelSrc);
     }
 
     @Override
@@ -54,7 +53,6 @@ public class AspectDiscoveryMapper extends Mapper<LongWritable, Text, Text, IntW
             List<String> words             = Arrays.asList(reviewNoPunctuation.split(" "));
             List<String> reviewNoStopWords = this.stopWords.removeStopWords(words);
 
-            MaxentTagger tagger = new MaxentTagger(this.taggerModelSrc);
             String sentenceTagged = tagger.tagTokenizedString(String.join(" ", reviewNoStopWords));
 
             for (String word : sentenceTagged.split(" ")) {

@@ -70,7 +70,7 @@ public class PosTags {
 
         String[] parts = word.split("_");
 
-        return adverbs.contains(parts[1]);
+        return parts.length >= 2 && adverbs.contains(parts[1]);
     }
 
     /**
@@ -88,11 +88,7 @@ public class PosTags {
 
         String[] parts = word.split("_");
 
-        if (parts.length < 2) {
-            return false;
-        }
-
-        return adverbs.contains(parts[1]);
+        return parts.length >= 2 && adverbs.contains(parts[1]);
     }
 
     /**
@@ -112,7 +108,19 @@ public class PosTags {
 
         String[] parts = word.split("_");
 
-        return verbs.contains(parts[1]);
+        return parts.length >= 2 && verbs.contains(parts[1]);
+    }
+
+    public boolean isAdjective(String word) {
+
+        List<String> adjectives = new ArrayList<>();
+        adjectives.add("JJ");
+        adjectives.add("JJR");
+        adjectives.add("JJS");
+
+        String[] parts = word.split("_");
+
+        return parts.length >= 2 && adjectives.contains(parts[1]);
     }
 
     public boolean isAdverbInRangeOfAspectWord(String document, String aspectWord, int nGram) {

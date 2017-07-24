@@ -1,5 +1,6 @@
-package domain.sentimentanalysis;
+package domain.sentimentanalysis.sentiwordnet;
 
+import domain.sentimentanalysis.sentiwordnet.SentiWordNetBuilder;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -11,9 +12,9 @@ import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class SentiWordNetSentimentAnalysisTest {
+public class SentiWordNetBuilderTest {
 
-    private SentiWordNetSentimentAnalysis sentiWordNetSentimentAnalysis;
+    private SentiWordNetBuilder sentiWordNetBuilder;
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
@@ -23,7 +24,7 @@ public class SentiWordNetSentimentAnalysisTest {
 
         String swn3Source = "src/test/resources/sentiwordnet/sentiwordnet3.txt";
 
-        this.sentiWordNetSentimentAnalysis = new SentiWordNetSentimentAnalysis(swn3Source);
+        this.sentiWordNetBuilder = new SentiWordNetBuilder(swn3Source);
     }
 
     @Test
@@ -34,13 +35,13 @@ public class SentiWordNetSentimentAnalysisTest {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("The SentiWordNet source must be supplied.");
 
-        this.sentiWordNetSentimentAnalysis = new SentiWordNetSentimentAnalysis(wrongSwn3Source);
+        this.sentiWordNetBuilder = new SentiWordNetBuilder(wrongSwn3Source);
     }
 
     @Test
     public void it_should_extract_and_build_a_map_of_words_with_a_sentiment_score() {
 
-        Map<String, Double> classifiedWords = this.sentiWordNetSentimentAnalysis.getScoredWords();
+        Map<String, Double> classifiedWords = this.sentiWordNetBuilder.getScoredWords();
 
         Map<String, Double> expectedOutput = new HashMap<>();
         expectedOutput.put("able-a", 0.1875);
@@ -54,9 +55,9 @@ public class SentiWordNetSentimentAnalysisTest {
 
         String swn3Source = "src/test/resources/sentiwordnet/sentiwordnet3-multi.txt";
 
-        this.sentiWordNetSentimentAnalysis = new SentiWordNetSentimentAnalysis(swn3Source);
+        this.sentiWordNetBuilder = new SentiWordNetBuilder(swn3Source);
 
-        Map<String, Double> classifiedWords = this.sentiWordNetSentimentAnalysis.getScoredWords();
+        Map<String, Double> classifiedWords = this.sentiWordNetBuilder.getScoredWords();
 
         Map<String, Double> expectedOutput = new HashMap<>();
         expectedOutput.put("unvalued-a", -0.375);
@@ -67,4 +68,22 @@ public class SentiWordNetSentimentAnalysisTest {
 
         assertThat(classifiedWords, is(expectedOutput));
     }
+
+//    @Test
+//    public void it_should_extract_and_build_the_entire_lexicon() {
+//
+//        String swn3Source = "src/main/resources/sentiwordnet/sentiwordnet3.txt";
+//
+//        this.sentiWordNetSentimentAnalysis = new SentiWordNetBuilder(swn3Source);
+//
+//        Map<String, Double> classifiedWords = this.sentiWordNetSentimentAnalysis.getScoredWords();
+//
+//        Map<String, Double> expectedOutput = new HashMap<>();
+//
+//        Double goodNoun = classifiedWords.get("good-n");
+//        Double goodAdjective = classifiedWords.get("good-a");
+//        Double goodAdverb = classifiedWords.get("good-r");
+//
+//        assertThat(classifiedWords, is(expectedOutput));
+//    }
 }

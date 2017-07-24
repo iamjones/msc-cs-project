@@ -100,6 +100,24 @@ public class PosTagsTest {
     }
 
     @Test
+    public void it_should_classify_a_jj_adjective_as_true() {
+
+        assertThat(this.posTags.isAdjective("word_JJ"), is(true));
+    }
+
+    @Test
+    public void it_should_classify_a_jjr_adjective_as_true() {
+
+        assertThat(this.posTags.isAdjective("word_JJR"), is(true));
+    }
+
+    @Test
+    public void it_should_classify_a_jjs_adjective_as_true() {
+
+        assertThat(this.posTags.isAdjective("word_JJS"), is(true));
+    }
+
+    @Test
     public void it_should_return_true_if_an_adverb_is_within_range_of_the_aspect_word() {
 
         String document = "The_DT battery_NN was_VBD very_RB good_JJ";

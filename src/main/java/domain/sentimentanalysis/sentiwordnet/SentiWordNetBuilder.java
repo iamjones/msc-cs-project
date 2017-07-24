@@ -1,4 +1,4 @@
-package domain.sentimentanalysis;
+package domain.sentimentanalysis.sentiwordnet;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,29 +7,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Does sentiment analysis using the SentiWordNet scheme.
+ * Responsible for processing the SentiWordNet 3 lexicon into a map of
+ * term -> score so it can be used for sentiment analysis.
  */
-public class SentiWordNetSentimentAnalysis implements SentimentAnalysis {
+public class SentiWordNetBuilder {
 
     private Map<String, Double> scoredWords = new HashMap<>();
-
-//    private Map<String, String> wordPos = new HashMap<>();
 
     /**
      * Reads the SentiWordNet file and aggregates each word and POS type to
      * an average score.
      *
-     * @param pathToSWN3 String
      * @throws IllegalArgumentException If the SWN3 file doesn't exist
      */
-    public SentiWordNetSentimentAnalysis(String pathToSWN3) {
-
-        // @TODO - move this. Does not really belong here
-//        this.wordPos.put("n", "noun");
-//        this.wordPos.put("v", "verb");
-//        this.wordPos.put("a", "adjective");
-//        this.wordPos.put("s", "adjective satellite");
-//        this.wordPos.put("r", "adverb");
+    public SentiWordNetBuilder(String pathToSWN3) {
 
         BufferedReader sentiwordnet = null;
 
@@ -79,17 +70,6 @@ public class SentiWordNetSentimentAnalysis implements SentimentAnalysis {
                 System.out.println(ex.getMessage());
             }
         }
-    }
-
-    /**
-     * Does sentiment analysis using the SentiWordNet scheme.
-     *
-     * @param document String
-     * @return Double
-     */
-    @Override
-    public Double getSentiment(String document) {
-        return null;
     }
 
     /**
