@@ -24,5 +24,23 @@ fi
 # Start Elasticsearch
 ./bin/elasticsearch -d
 
+# Sleep for 60 seconds to allow Elasticsearch to start
+sleep 60
+
+# Add the necassary mappings for the review type
+curl -XPUT 'localhost:9200/reviews?pretty' -H 'Content-Type: application/json' -d'
+{
+  "mappings": {
+    "review": {
+      "properties": {
+        "sentimentScore": {
+          "type": "double"
+        }
+      }
+    }
+  }
+}
+'
+
 # Remove the zipped directory as we no longer need it
 # rm src/main/resources/elasticsearch/elasticsearch-5.5.0.tar.gz

@@ -49,7 +49,7 @@ public class SentiWordNetSentimentAnalysis implements SentimentAnalysis {
         for (String word : document.trim().split(" ")) {
 
             String[] parts = word.split("_");
-            String type = "n";
+            String type = null;
 
             if (this.posTags.isAdverb(word)) {
                 type = "r";
@@ -57,6 +57,12 @@ public class SentiWordNetSentimentAnalysis implements SentimentAnalysis {
                 type = "v";
             } else if (this.posTags.isAdjective(word)) {
                 type = "a";
+            } else if (this.posTags.isNoun(word)) {
+                type = "n";
+            }
+
+            if (type == null) {
+                continue;
             }
 
             // @TODO - dont forget about the adjective satellite type

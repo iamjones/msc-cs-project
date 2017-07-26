@@ -2,16 +2,16 @@ package sentimentanalysis.mapper;
 
 import domain.aspectwords.AspectWordsMatcher;
 import domain.entity.Review;
-import domain.entity.ReviewWritable;
 import domain.postags.PosTags;
 import domain.punctuation.Punctuation;
 import domain.stopwords.StopWords;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.htrace.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.htrace.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  *
  *
  */
-public class SentimentAnalysisMapper extends Mapper<LongWritable, Text, Text, ReviewWritable> {
+public class SentimentAnalysisMapper extends Mapper<LongWritable, Text, Text, MapWritable> {
 
     private Logger logger = Logger.getLogger("SentimentAnalysisMapper");
 
@@ -95,15 +95,13 @@ public class SentimentAnalysisMapper extends Mapper<LongWritable, Text, Text, Re
 
                 for (String aspectWord : foundAspectWords) {
                     if (this.posTags.isAdverbInRangeOfAspectWord(sentenceTagged, aspectWord, 5)) {
-                        ReviewWritable reviewWritable = new ReviewWritable(
-                            new Text(review.getAsin()),
-                            new Text(review.getReviewText()),
-                            new Text(data.get(s)),
-                            new Text(s),
-                            new Text(aspectWord)
-                        );
+                        MapWritable mapWritable = new MapWritable();
+                        mapWritable.put(new Text("asin"), new Text(review.getAsin()));
+                        mapWritable.put(new Text("sentence"), new Text(data.get(s)));
+                        mapWritable.put(new Text("normalisedSentence"), new Text(s));
+                        mapWritable.put(new Text("aspectWord"), new Text(aspectWord));
 
-                        context.write(new Text(review.getAsin()), reviewWritable);
+                        context.write(new Text(review.getAsin()), mapWritable);
                     }
                 }
             }

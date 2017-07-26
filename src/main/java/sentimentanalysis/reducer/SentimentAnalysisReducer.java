@@ -1,9 +1,11 @@
 package sentimentanalysis.reducer;
 
-import domain.entity.ReviewWritable;
-import domain.sentimentanalysis.sentiwordnet.SentiWordNetSentimentAnalysis;
 import domain.sentimentanalysis.SentimentAnalysis;
+import domain.sentimentanalysis.sentiwordnet.SentiWordNetSentimentAnalysis;
+import org.apache.hadoop.io.DoubleWritable;
+import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
@@ -11,7 +13,7 @@ import java.io.IOException;
 /**
  * Reduces the web content based on URL and sentiment score.
  */
-public class SentimentAnalysisReducer extends Reducer<Text, ReviewWritable, Text, ReviewWritable> {
+public class SentimentAnalysisReducer extends Reducer<Text, MapWritable, Text, MapWritable> {
 
     private SentimentAnalysis sentimentAnalysis;
 
@@ -32,13 +34,28 @@ public class SentimentAnalysisReducer extends Reducer<Text, ReviewWritable, Text
      */
     public void reduce(
         Text key,
-        Iterable<ReviewWritable> values,
+        Iterable<MapWritable> values,
         Context context
-    ) {
+    ) throws IOException, InterruptedException {
 
-        for (ReviewWritable review : values) {
+        for (MapWritable review : values) {
 
+            Writable asin               = review.get(new Text("asin"));
+            Writable sentence           = review.get(new Text("sentence"));
+            Writable normalisedSentence = review.get(new Text("normalisedSentence"));
+            Writable aspectWord         = review.get(new Text("aspectWord"));
 
+            MapWritable mapWritable = new MapWritable();
+            mapWritable.put(new Text("asin"), asin);
+            mapWritable.put(new Text("sentence"), sentence);
+            mapWritable.put(new Text("normalisedSentence"), normalisedSentence);
+            mapWritable.put(new Text("aspectWord"), aspectWord);
+            mapWritable.put(
+                new Text("sentimentScore"),
+                new DoubleWritable(this.sentimentAnalysis.getSentiment(normalisedSentence.toString()))
+            );
+
+            context.write(key, mapWritable);
         }
 
     }
