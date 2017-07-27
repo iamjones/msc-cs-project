@@ -16,22 +16,12 @@ public class SentiWordNetSentimentAnalysis implements SentimentAnalysis {
 
     private PosTags posTags;
 
-//    private Map<String, String> wordPos = new HashMap<>();
-
     public SentiWordNetSentimentAnalysis() {
 
         SentiWordNetBuilder sentiWordNetBuilder = new SentiWordNetBuilder(this.sentiwordnetsource);
 
         this.lexicon = sentiWordNetBuilder.getScoredWords();
-
         this.posTags = new PosTags();
-
-        // @TODO - move this. Does not really belong here
-//        this.wordPos.put("n", "noun");
-//        this.wordPos.put("v", "verb");
-//        this.wordPos.put("a", "adjective");
-//        this.wordPos.put("s", "adjective satellite");
-//        this.wordPos.put("r", "adverb");
     }
 
     /**
@@ -64,8 +54,6 @@ public class SentiWordNetSentimentAnalysis implements SentimentAnalysis {
             if (type == null) {
                 continue;
             }
-
-            // @TODO - dont forget about the adjective satellite type
 
             if (this.lexicon.get(parts[0] + "-" + type) != null) {
                 count += this.lexicon.get(parts[0] + "-" + type);

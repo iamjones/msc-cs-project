@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.nullValue;
 
 public class PosTagsTest {
 
@@ -118,22 +119,26 @@ public class PosTagsTest {
     }
 
     @Test
-    public void it_should_return_true_if_an_adverb_is_within_range_of_the_aspect_word() {
+    public void it_should_return_a_string_of_words_if_an_adverb_is_within_range_of_the_aspect_word() {
 
         String document = "The_DT battery_NN was_VBD very_RB good_JJ";
         String aspectWord = "battery";
         int nGram = 5;
 
-        assertThat(this.posTags.isAdverbInRangeOfAspectWord(document, aspectWord, nGram), is(true));
+        String words = this.posTags.isAdverbInRangeOfAspectWord(document, aspectWord, nGram);
+
+        assertThat(words, is("battery_NN was_VBD very_RB good_JJ"));
     }
 
     @Test
-    public void it_should_return_false_if_an_adverb_is_not_within_range_of_the_aspect_word() {
+    public void it_should_return_null_if_an_adverb_is_not_within_range_of_the_aspect_word() {
 
         String document = "The_DT battery_NN was_VBD good_JJ good_JJ good_JJ good_JJ good_JJ very_RB";
         String aspectWord = "battery";
         int nGram = 5;
 
-        assertThat(this.posTags.isAdverbInRangeOfAspectWord(document, aspectWord, nGram), is(false));
+        String words = this.posTags.isAdverbInRangeOfAspectWord(document, aspectWord, nGram);
+
+        assertThat(words, is(nullValue()));
     }
 }

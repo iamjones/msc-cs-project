@@ -27,7 +27,8 @@ public class SentimentAnalysisReducerTest {
 
         MapWritable review = new MapWritable();
         review.put(new Text("sentence"), new Text("The battery was very powerful."));
-        review.put(new Text("normalisedSentence"), new Text("battery_NN very_RB powerful_JJ"));
+        review.put(new Text("normalisedSentence"), new Text("battery very powerful"));
+        review.put(new Text("sentenceTagged"), new Text("battery_NN very_RB powerful_JJ"));
         review.put(new Text("asin"), new Text("ASINString"));
         review.put(new Text("aspectWord"), new Text("battery"));
 

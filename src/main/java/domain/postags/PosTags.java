@@ -123,7 +123,7 @@ public class PosTags {
         return parts.length >= 2 && adjectives.contains(parts[1]);
     }
 
-    public boolean isAdverbInRangeOfAspectWord(String document, String aspectWord, int nGram) {
+    public String isAdverbInRangeOfAspectWord(String document, String aspectWord, int nGram) {
 
         String[] d = document.split(aspectWord);
 
@@ -138,11 +138,11 @@ public class PosTags {
             // Check the five (or less) words for an adverb
             for (String w : words) {
                 if (this.isAdverb(w)) {
-                    return true;
+                    return aspectWord + String.join(" ", words);
                 }
             }
         }
 
-        return false;
+        return null;
     }
 }

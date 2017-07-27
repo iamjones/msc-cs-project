@@ -94,11 +94,15 @@ public class SentimentAnalysisMapper extends Mapper<LongWritable, Text, Text, Ma
                 String sentenceTagged = this.tagger.tagTokenizedString(s);
 
                 for (String aspectWord : foundAspectWords) {
-                    if (this.posTags.isAdverbInRangeOfAspectWord(sentenceTagged, aspectWord, 5)) {
+
+                    String phrase = this.posTags.isAdverbInRangeOfAspectWord(sentenceTagged, aspectWord, 5);
+
+                    if (phrase != null) {
                         MapWritable mapWritable = new MapWritable();
                         mapWritable.put(new Text("asin"), new Text(review.getAsin()));
                         mapWritable.put(new Text("sentence"), new Text(data.get(s)));
                         mapWritable.put(new Text("normalisedSentence"), new Text(s));
+                        mapWritable.put(new Text("sentenceTagged"), new Text(phrase));
                         mapWritable.put(new Text("aspectWord"), new Text(aspectWord));
 
                         context.write(new Text(review.getAsin()), mapWritable);
