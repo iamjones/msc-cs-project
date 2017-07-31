@@ -61,8 +61,7 @@ public class TaskParameterValidatorTest {
         exceptions.expectMessage("A path to the aspect words file is required.");
 
         this.taskParameterValidator.checkAspectWordsPath(new String[]{
-            "input/file/path",
-            "output/file/path"
+            "input/file/path"
         });
     }
 
@@ -71,7 +70,6 @@ public class TaskParameterValidatorTest {
 
         this.taskParameterValidator.checkAspectWordsPath(new String[]{
             "input/file/path",
-            "output/file/path",
             "aspect/words/file/path"
         });
     }

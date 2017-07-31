@@ -127,7 +127,7 @@ public class PosTagsTest {
 
         String words = this.posTags.isAdverbInRangeOfAspectWord(document, aspectWord, nGram);
 
-        assertThat(words, is("battery_NN was_VBD very_RB good_JJ"));
+        assertThat(words, is("was_VBD very_RB good_JJ"));
     }
 
     @Test

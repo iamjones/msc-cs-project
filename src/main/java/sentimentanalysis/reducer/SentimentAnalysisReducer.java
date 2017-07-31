@@ -46,25 +46,36 @@ public class SentimentAnalysisReducer extends Reducer<Text, MapWritable, Text, M
             Writable normalisedSentence = review.get(new Text("normalisedSentence"));
             Writable sentenceTagged     = review.get(new Text("sentenceTagged"));
             Writable aspectWord         = review.get(new Text("aspectWord"));
+            Writable reviewerName       = review.get(new Text("reviewerName"));
+            Writable reviewTime         = review.get(new Text("reviewTime"));
 
             Double sentimentScore = this.sentimentAnalysis.getSentiment(sentenceTagged.toString());
 
-            DecimalFormat df = new DecimalFormat("#.#####");
-            Double sentimentScoreRounded = Double.valueOf(df.format(sentimentScore));
+            if (!Double.isNaN(sentimentScore)) {
+                DecimalFormat df = new DecimalFormat("#.#####");
+                Double sentimentScoreRounded = Double.valueOf(df.format(sentimentScore));
 
-            MapWritable mapWritable = new MapWritable();
-            mapWritable.put(new Text("asin"), asin);
-            mapWritable.put(new Text("sentence"), sentence);
-            mapWritable.put(new Text("sentenceTagged"), sentenceTagged);
-            mapWritable.put(new Text("normalisedSentence"), normalisedSentence);
-            mapWritable.put(new Text("aspectWord"), aspectWord);
-            mapWritable.put(
-                new Text("sentimentScore"),
-                new DoubleWritable(sentimentScoreRounded)
-            );
+                MapWritable mapWritable = new MapWritable();
+                mapWritable.put(new Text("asin"), asin);
+                mapWritable.put(new Text("sentence"), sentence);
+                mapWritable.put(new Text("sentenceTagged"), sentenceTagged);
+                mapWritable.put(new Text("normalisedSentence"), normalisedSentence);
+                mapWritable.put(new Text("aspectWord"), aspectWord);
+                mapWritable.put(
+                    new Text("sentimentScore"),
+                    new DoubleWritable(sentimentScoreRounded)
+                );
 
-            context.write(key, mapWritable);
+                if (reviewerName != null) {
+                    mapWritable.put(new Text("reviewerName"), reviewerName);
+                }
+
+                if (reviewTime != null) {
+                    mapWritable.put(new Text("reviewTime"), reviewTime);
+                }
+
+                context.write(key, mapWritable);
+            }
         }
-
     }
 }

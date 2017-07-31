@@ -6,10 +6,15 @@ import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mrunit.mapreduce.MapDriver;
+import org.apache.hadoop.mrunit.types.Pair;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class SentimentAnalysisMapperTest {
 
@@ -46,18 +51,16 @@ public class SentimentAnalysisMapperTest {
     public void it_should_extract_a_single_sentence_containing_one_aspect_word_and_sentiment_word()
         throws IOException {
 
-//        LongWritable inputKey = new LongWritable(1);
-//        Text inputValue = new Text(testJson);
-//
-//        List<Pair<Text, ReviewWritable>> output = sentimentAnalysisMapper.withInput(inputKey, inputValue).run();
-//
-//        assertThat(output.get(0).getFirst(), is(new Text("0528881469")));
-//
-//        ReviewWritable rsp1 = output.get(0).getSecond();
-//
-//        assertThat(rsp1.getAsin(), is(new Text("0528881469")));
-//        assertThat(rsp1.getReviewText(), is(new Text("I bought the phone but I must state that I have never had "
-//            + "an electrical device with a battery that performs so poorly.")));
+        LongWritable inputKey = new LongWritable(1);
+        Text inputValue = new Text(testJson);
+
+        List<Pair<Text, MapWritable>> output = sentimentAnalysisMapper.withInput(inputKey, inputValue).run();
+
+        assertThat(output.get(0).getFirst(), is(new Text("0528881469")));
+
+        MapWritable rsp1 = output.get(0).getSecond();
+
+        assertThat(rsp1.get(new Text("asin")), is(new Text("0528881469")));
 //        assertThat(rsp1.getCleanSentence(), is(new Text("bought_VBN phone_NN must_MD state_VB never_RB electrical_JJ device_NN battery_NN performs_VBZ poorly_RB")));
 //        assertThat(rsp1.getSentence(), is(new Text("I bought the phone but I must state that I have never had "
 //            + "an electrical device with a battery that performs so poorly")));

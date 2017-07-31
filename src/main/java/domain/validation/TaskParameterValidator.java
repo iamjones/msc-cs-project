@@ -42,7 +42,7 @@ public class TaskParameterValidator {
     public void checkAspectWordsPath(String[] args) {
 
         try {
-            String inputPath = args[2];
+            String inputPath = args[1];
         } catch(ArrayIndexOutOfBoundsException e) {
             throw new IllegalArgumentException("A path to the aspect words file is required.");
         }

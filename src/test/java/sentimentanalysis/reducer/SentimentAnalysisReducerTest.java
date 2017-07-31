@@ -31,6 +31,8 @@ public class SentimentAnalysisReducerTest {
         review.put(new Text("sentenceTagged"), new Text("battery_NN very_RB powerful_JJ"));
         review.put(new Text("asin"), new Text("ASINString"));
         review.put(new Text("aspectWord"), new Text("battery"));
+        review.put(new Text("reviewerName"), new Text("John Smith"));
+        review.put(new Text("reviewTime"), new Text("09 13, 2009"));
 
         Text inputKey = new Text("ASINString");
         List<MapWritable> inputValues = new ArrayList<>();

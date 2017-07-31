@@ -2,6 +2,7 @@ package domain.postags;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,20 +128,37 @@ public class PosTags {
 
         String[] d = document.split(aspectWord);
 
+        int c = 0;
         for (String section : d) {
-            String[] words       = section.split(" ");
+            String[] words = section.split(" ");
+
+            if (c == 0 && d.length == 2) {
+                Collections.reverse(Arrays.asList(words));
+            }
 
             if (words.length > nGram) {
                 // Cap the string to five words
                 words = Arrays.copyOfRange(words, 0, nGram - 1);
             }
 
-            // Check the five (or less) words for an adverb
+            // Remove the leftover word type from the aspect word if there is one
+            List<String> cleanWords = new ArrayList<>();
             for (String w : words) {
+                if (w.startsWith("_")) {
+                    continue;
+                }
+
+                cleanWords.add(w);
+            }
+
+            // Check the five (or less) words for an adverb
+            for (String w : cleanWords.toArray(new String[0])) {
                 if (this.isAdverb(w)) {
-                    return aspectWord + String.join(" ", words);
+                    return String.join(" ", cleanWords);
                 }
             }
+
+            c++;
         }
 
         return null;

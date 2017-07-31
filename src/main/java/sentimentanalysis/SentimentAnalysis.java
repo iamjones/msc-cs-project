@@ -8,7 +8,6 @@ import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.elasticsearch.hadoop.mr.EsOutputFormat;
 import sentimentanalysis.mapper.SentimentAnalysisMapper;
 import sentimentanalysis.mapper.SentimentAnalysisMapperModule;
@@ -32,9 +31,6 @@ public class SentimentAnalysis {
         // Check if an input path has been supplied
         taskParameterValidator.checkInputPath(args);
 
-        // Check if an output path has been supplied
-        taskParameterValidator.checkOutputPath(args);
-
         // If is a path to the aspect words file has been supplied
         taskParameterValidator.checkAspectWordsPath(args);
 
@@ -49,7 +45,7 @@ public class SentimentAnalysis {
         // Set up our dependency injection modules
         Guice.createInjector(new SentimentAnalysisMapperModule());
 
-        configuration.set("aspectWordsFilePath", args[2]);
+        configuration.set("aspectWordsFilePath", args[1]);
 
         Job job = Job.getInstance(configuration, "sentimentanalysis");
         job.setJarByClass(SentimentAnalysis.class);
@@ -62,7 +58,6 @@ public class SentimentAnalysis {
         job.setOutputFormatClass(EsOutputFormat.class);
 
         FileInputFormat.addInputPath(job, new Path(args[0]));
-        FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
         System.exit(job.waitForCompletion(true) ? 1 : 0);
     }
