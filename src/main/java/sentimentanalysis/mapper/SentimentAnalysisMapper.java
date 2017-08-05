@@ -99,18 +99,17 @@ public class SentimentAnalysisMapper extends Mapper<LongWritable, Text, Text, Ma
 
                     if (phrase != null) {
                         MapWritable mapWritable = new MapWritable();
-                        mapWritable.put(new Text("asin"), new Text(review.getAsin()));
-                        mapWritable.put(new Text("sentence"), new Text(data.get(s)));
-                        mapWritable.put(new Text("normalisedSentence"), new Text(s));
-                        mapWritable.put(new Text("sentenceTagged"), new Text(phrase));
-                        mapWritable.put(new Text("aspectWord"), new Text(aspectWord));
+                        mapWritable.put(new Text("asin"), new Text(review.getAsin().trim()));
+                        mapWritable.put(new Text("sentence"), new Text(data.get(s).trim()));
+                        mapWritable.put(new Text("sentenceTagged"), new Text(phrase.trim()));
+                        mapWritable.put(new Text("aspectWord"), new Text(aspectWord.trim()));
 
                         if (review.getReviewerName() != null) {
-                            mapWritable.put(new Text("reviewerName"), new Text(review.getReviewerName()));
+                            mapWritable.put(new Text("reviewerName"), new Text(review.getReviewerName().trim()));
                         }
 
                         if (review.getReviewTime() != null) {
-                            mapWritable.put(new Text("reviewTime"), new Text(review.getReviewTime()));
+                            mapWritable.put(new Text("reviewTime"), new Text(review.getReviewTime().trim()));
                         }
 
                         context.write(new Text(review.getAsin()), mapWritable);

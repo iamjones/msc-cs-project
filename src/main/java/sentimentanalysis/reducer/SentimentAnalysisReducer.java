@@ -2,14 +2,15 @@ package sentimentanalysis.reducer;
 
 import domain.sentimentanalysis.SentimentAnalysis;
 import domain.sentimentanalysis.sentiwordnet.SentiWordNetSentimentAnalysis;
-import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.pig.backend.hadoop.BigDecimalWritable;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * Reduces the web content based on URL and sentiment score.
@@ -43,27 +44,23 @@ public class SentimentAnalysisReducer extends Reducer<Text, MapWritable, Text, M
 
             Writable asin               = review.get(new Text("asin"));
             Writable sentence           = review.get(new Text("sentence"));
-            Writable normalisedSentence = review.get(new Text("normalisedSentence"));
             Writable sentenceTagged     = review.get(new Text("sentenceTagged"));
             Writable aspectWord         = review.get(new Text("aspectWord"));
             Writable reviewerName       = review.get(new Text("reviewerName"));
             Writable reviewTime         = review.get(new Text("reviewTime"));
 
             Double sentimentScore = this.sentimentAnalysis.getSentiment(sentenceTagged.toString());
+            BigDecimal sentimentScoreRounded = BigDecimal.valueOf(sentimentScore).setScale(5, RoundingMode.HALF_UP);
 
             if (!Double.isNaN(sentimentScore)) {
-                DecimalFormat df = new DecimalFormat("#.#####");
-                Double sentimentScoreRounded = Double.valueOf(df.format(sentimentScore));
 
                 MapWritable mapWritable = new MapWritable();
                 mapWritable.put(new Text("asin"), asin);
                 mapWritable.put(new Text("sentence"), sentence);
-                mapWritable.put(new Text("sentenceTagged"), sentenceTagged);
-                mapWritable.put(new Text("normalisedSentence"), normalisedSentence);
                 mapWritable.put(new Text("aspectWord"), aspectWord);
                 mapWritable.put(
                     new Text("sentimentScore"),
-                    new DoubleWritable(sentimentScoreRounded)
+                    new BigDecimalWritable(sentimentScoreRounded)
                 );
 
                 if (reviewerName != null) {

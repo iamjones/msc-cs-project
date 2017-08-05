@@ -24,7 +24,7 @@ build-aspect-discovery-test: build
 
 # Run the aspect discovery job locally on the full data set
 build-aspect-discovery: build
-	hadoop jar target/msc-cs-project.jar aspectdiscovery.AspectDiscovery $(inputDir)5000_reviews.json $(outputDir)aspects-$$RANDOM
+	hadoop jar target/msc-cs-project.jar aspectdiscovery.AspectDiscovery $(inputDir)500_reviews.json $(outputDir)aspects-$$RANDOM
 
 # Run the sentiment analyser job locally on a small set of real data
 # For example
@@ -37,4 +37,4 @@ build-sentiment-analyser-test: build
 # Run the dictionary builder job locally on the full data set
 build-sentiment-analyser: build
 	./elasticsearch.sh
-	hadoop jar target/msc-cs-project.jar sentimentanalysis.SentimentAnalysis $(inputDir)5000_reviews.json $(aspectWordsFile)
+	hadoop jar target/msc-cs-project.jar sentimentanalysis.SentimentAnalysis $(inputDir)500_reviews.json $(aspectWordsFile)
