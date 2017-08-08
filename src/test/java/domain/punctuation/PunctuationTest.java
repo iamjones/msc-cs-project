@@ -1,6 +1,5 @@
 package domain.punctuation;
 
-import domain.punctuation.Punctuation;
 import org.junit.Before;
 import org.junit.Test;
 

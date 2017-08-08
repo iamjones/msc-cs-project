@@ -6,7 +6,6 @@ import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.pig.backend.hadoop.BigDecimalWritable;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -50,9 +49,12 @@ public class SentimentAnalysisReducer extends Reducer<Text, MapWritable, Text, M
             Writable reviewTime         = review.get(new Text("reviewTime"));
 
             Double sentimentScore = this.sentimentAnalysis.getSentiment(sentenceTagged.toString());
-            BigDecimal sentimentScoreRounded = BigDecimal.valueOf(sentimentScore).setScale(5, RoundingMode.HALF_UP);
+
+            System.out.println("Sentiment score: " + sentimentScore);
 
             if (!Double.isNaN(sentimentScore)) {
+
+                BigDecimal sentimentScoreRounded = BigDecimal.valueOf(sentimentScore).setScale(5, RoundingMode.HALF_UP);
 
                 MapWritable mapWritable = new MapWritable();
                 mapWritable.put(new Text("asin"), asin);
@@ -60,7 +62,7 @@ public class SentimentAnalysisReducer extends Reducer<Text, MapWritable, Text, M
                 mapWritable.put(new Text("aspectWord"), aspectWord);
                 mapWritable.put(
                     new Text("sentimentScore"),
-                    new BigDecimalWritable(sentimentScoreRounded)
+                    new Text(sentimentScoreRounded.toString())
                 );
 
                 if (reviewerName != null) {

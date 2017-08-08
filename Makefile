@@ -32,7 +32,8 @@ build-aspect-discovery: build
 # - make build-sentiment-analyser-test c=25
 # - make build-sentiment-analyser-test c=100
 build-sentiment-analyser-test: build
-	hadoop jar target/msc-cs-project.jar sentimentanalysis.SentimentAnalysis $(inputDir)$(c)_reviews.json $(outputDir)sentiment-$$RANDOM $(aspectWordsFile)
+	./elasticsearch.sh
+	hadoop jar target/msc-cs-project.jar sentimentanalysis.SentimentAnalysis $(inputDir)$(c)_reviews.json $(aspectWordsFile)
 
 # Run the dictionary builder job locally on the full data set
 build-sentiment-analyser: build

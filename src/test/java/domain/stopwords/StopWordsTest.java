@@ -1,6 +1,5 @@
 package domain.stopwords;
 
-import domain.stopwords.StopWords;
 import org.junit.Before;
 import org.junit.Test;
 
