@@ -17,6 +17,9 @@ if [ ! -d "$ESSOURCE" ]; then
 
 	# Change into the extracted directory
 	cd elasticsearch-5.5.1
+
+	# Remove the zipped directory as we no longer need it
+    rm ../elasticsearch-5.5.1.tar.gz
 else
 	cd src/main/resources/elasticsearch/elasticsearch-5.5.1
 fi
@@ -26,6 +29,3 @@ fi
 
 # Sleep for 60 seconds to allow Elasticsearch to start
 sleep 60
-
-# Remove the zipped directory as we no longer need it
-# rm src/main/resources/elasticsearch/elasticsearch-5.5.1.tar.gz
