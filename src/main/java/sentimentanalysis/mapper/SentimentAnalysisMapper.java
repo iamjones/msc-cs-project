@@ -7,6 +7,7 @@ import domain.punctuation.Punctuation;
 import domain.stopwords.StopWords;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
@@ -81,6 +82,10 @@ public class SentimentAnalysisMapper extends Mapper<LongWritable, Text, Text, Ma
                 data.put(String.join(" ", sentenceNoStopWords), sentence);
             }
 
+            MapWritable mapWritable      = new MapWritable();
+            MapWritable extractedAspects = new MapWritable();
+
+            int c = 0;
             for (String s : data.keySet()) {
 
                 // Get the aspect words that are included in the sentence
@@ -93,29 +98,35 @@ public class SentimentAnalysisMapper extends Mapper<LongWritable, Text, Text, Ma
 
                 String sentenceTagged = this.tagger.tagTokenizedString(s);
 
+                mapWritable.put(new Text("asin"), new Text(review.getAsin().trim()));
+
+                if (review.getReviewerName() != null) {
+                    mapWritable.put(new Text("reviewerName"), new Text(review.getReviewerName().trim()));
+                }
+
+                if (review.getReviewTime() != null) {
+                    mapWritable.put(new Text("reviewTime"), new Text(review.getReviewTime().trim()));
+                }
+
                 for (String aspectWord : foundAspectWords) {
 
                     String phrase = this.posTags.isAdverbInRangeOfAspectWord(sentenceTagged, aspectWord, 5);
 
                     if (phrase != null) {
-                        MapWritable mapWritable = new MapWritable();
-                        mapWritable.put(new Text("asin"), new Text(review.getAsin().trim()));
-                        mapWritable.put(new Text("sentence"), new Text(data.get(s).trim()));
-                        mapWritable.put(new Text("sentenceTagged"), new Text(phrase.trim()));
-                        mapWritable.put(new Text("aspectWord"), new Text(aspectWord.trim()));
 
-                        if (review.getReviewerName() != null) {
-                            mapWritable.put(new Text("reviewerName"), new Text(review.getReviewerName().trim()));
-                        }
+                        MapWritable aspectData = new MapWritable();
+                        aspectData.put(new Text("sentence"), new Text(data.get(s).trim()));
+                        aspectData.put(new Text("sentenceTagged"), new Text(phrase.trim()));
+                        aspectData.put(new Text("aspectWord"), new Text(aspectWord.trim()));
 
-                        if (review.getReviewTime() != null) {
-                            mapWritable.put(new Text("reviewTime"), new Text(review.getReviewTime().trim()));
-                        }
-
-                        context.write(new Text(review.getAsin()), mapWritable);
+                        extractedAspects.put(new IntWritable(c), aspectData);
+                        c++;
                     }
                 }
             }
+
+            mapWritable.put(new Text("extractedAspects"), extractedAspects);
+            context.write(new Text(review.getAsin()), mapWritable);
 
         } catch (IOException | InterruptedException e) {
             // @TODO - log this somewhere useful

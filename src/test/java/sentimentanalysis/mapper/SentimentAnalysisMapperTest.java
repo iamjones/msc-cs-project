@@ -1,6 +1,7 @@
 package sentimentanalysis.mapper;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
@@ -61,9 +62,15 @@ public class SentimentAnalysisMapperTest {
         MapWritable rsp1 = output.get(0).getSecond();
 
         assertThat(rsp1.get(new Text("asin")), is(new Text("0528881469")));
-        assertThat(rsp1.get(new Text("sentence")), is(new Text("I bought the phone but I must state that I have never had "
-            + "an electrical device with a battery that performs so poorly")));
-        assertThat(rsp1.get(new Text("aspectWord")), is(new Text("battery")));
+        assertThat(rsp1.get(new Text("reviewerName")), is(new Text("amazdnu")));
+        assertThat(rsp1.get(new Text("reviewTime")), is(new Text("06 2, 2013")));
+
+        MapWritable extractedAspects = (MapWritable) rsp1.get(new Text("extractedAspects"));
+
+        MapWritable battery = (MapWritable) extractedAspects.get(new IntWritable(0));
+        assertThat(battery.get(new Text("sentence")), is(new Text("I bought the phone but I must state that I have never had an electrical device with a battery that performs so poorly")));
+        assertThat(battery.get(new Text("aspectWord")), is(new Text("battery")));
+        assertThat(battery.get(new Text("sentenceTagged")), is(new Text("device_NN electrical_JJ never_RB state_VB")));
     }
 
     @Test
@@ -90,29 +97,29 @@ public class SentimentAnalysisMapperTest {
         List<Pair<Text, MapWritable>> output = sentimentAnalysisMapper.withInput(inputKey, inputValue).run();
 
         assertThat(output.get(0).getFirst(), is(new Text("0528881469")));
-        assertThat(output.get(1).getFirst(), is(new Text("0528881469")));
-        assertThat(output.get(2).getFirst(), is(new Text("0528881469")));
 
         // Battery
         MapWritable rsp1 = output.get(0).getSecond();
 
         assertThat(rsp1.get(new Text("asin")), is(new Text("0528881469")));
-        assertThat(rsp1.get(new Text("sentence")), is(new Text("I bought the phone but I must state that I have never had "
-            + "an electrical device with a battery that performs so poorly")));
-        assertThat(rsp1.get(new Text("aspectWord")), is(new Text("battery")));
+        assertThat(rsp1.get(new Text("reviewerName")), is(new Text("amazdnu")));
+        assertThat(rsp1.get(new Text("reviewTime")), is(new Text("06 2, 2013")));
 
-        // Display
-        MapWritable rsp2 = output.get(1).getSecond();
+        MapWritable extractedAspects = (MapWritable) rsp1.get(new Text("extractedAspects"));
 
-        assertThat(rsp2.get(new Text("asin")), is(new Text("0528881469")));
-        assertThat(rsp2.get(new Text("sentence")), is(new Text("I really feel that the display and screen were perfectly implemented")));
-        assertThat(rsp2.get(new Text("aspectWord")), is(new Text("display")));
+        MapWritable battery = (MapWritable) extractedAspects.get(new IntWritable(0));
+        assertThat(battery.get(new Text("sentence")), is(new Text("I bought the phone but I must state that I have never had an electrical device with a battery that performs so poorly")));
+        assertThat(battery.get(new Text("aspectWord")), is(new Text("battery")));
+        assertThat(battery.get(new Text("sentenceTagged")), is(new Text("device_NN electrical_JJ never_RB state_VB")));
 
-        // Screen
-        MapWritable rsp3 = output.get(2).getSecond();
+        MapWritable display = (MapWritable) extractedAspects.get(new IntWritable(1));
+        assertThat(display.get(new Text("sentence")), is(new Text("I really feel that the display and screen were perfectly implemented")));
+        assertThat(display.get(new Text("aspectWord")), is(new Text("display")));
+        assertThat(display.get(new Text("sentenceTagged")), is(new Text("feel_VB really_RB")));
 
-        assertThat(rsp3.get(new Text("asin")), is(new Text("0528881469")));
-        assertThat(rsp3.get(new Text("sentence")), is(new Text("I really feel that the display and screen were perfectly implemented")));
-        assertThat(rsp3.get(new Text("aspectWord")), is(new Text("screen")));
+        MapWritable screen = (MapWritable) extractedAspects.get(new IntWritable(2));
+        assertThat(screen.get(new Text("sentence")), is(new Text("I really feel that the display and screen were perfectly implemented")));
+        assertThat(screen.get(new Text("aspectWord")), is(new Text("screen")));
+        assertThat(screen.get(new Text("sentenceTagged")), is(new Text("display_NN feel_VB really_RB")));
     }
 }
