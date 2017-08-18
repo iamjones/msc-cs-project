@@ -2,6 +2,7 @@ package sentimentanalysis.reducer;
 
 import domain.sentimentanalysis.SentimentAnalysis;
 import domain.sentimentanalysis.sentiwordnet.SentiWordNetSentimentAnalysis;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
@@ -10,6 +11,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Map;
 
 /**
  * Reduces the web content based on URL and sentiment score.
@@ -42,39 +44,57 @@ public class SentimentAnalysisReducer extends Reducer<Text, MapWritable, Text, M
         for (MapWritable review : values) {
 
             Writable asin               = review.get(new Text("asin"));
-            Writable sentence           = review.get(new Text("sentence"));
-            Writable sentenceTagged     = review.get(new Text("sentenceTagged"));
-            Writable aspectWord         = review.get(new Text("aspectWord"));
+//            Writable sentence           = review.get(new Text("sentence"));
+//            Writable sentenceTagged     = review.get(new Text("sentenceTagged"));
+//            Writable aspectWord         = review.get(new Text("aspectWord"));
             Writable reviewerName       = review.get(new Text("reviewerName"));
             Writable reviewTime         = review.get(new Text("reviewTime"));
 
-            Double sentimentScore = this.sentimentAnalysis.getSentiment(sentenceTagged.toString());
+            MapWritable extractedAspects = (MapWritable) review.get(new Text("extractedAspects"));
 
-            System.out.println("Sentiment score: " + sentimentScore);
+            extractedAspects.entrySet();
 
-            if (!Double.isNaN(sentimentScore)) {
+            MapWritable extractedAspectsClassified = new MapWritable();
 
-                BigDecimal sentimentScoreRounded = BigDecimal.valueOf(sentimentScore).setScale(5, RoundingMode.HALF_UP);
+            int c = 0;
+            for (Map.Entry extractedAspect : extractedAspects.entrySet()) {
 
-                MapWritable mapWritable = new MapWritable();
-                mapWritable.put(new Text("asin"), asin);
-                mapWritable.put(new Text("sentence"), sentence);
-                mapWritable.put(new Text("aspectWord"), aspectWord);
-                mapWritable.put(
-                    new Text("sentimentScore"),
-                    new Text(sentimentScoreRounded.toString())
-                );
+                MapWritable aspectMap = (MapWritable) extractedAspect.getValue();
 
-                if (reviewerName != null) {
-                    mapWritable.put(new Text("reviewerName"), reviewerName);
+                Double sentimentScore = this.sentimentAnalysis.getSentiment(aspectMap.get(new Text("sentenceTagged")).toString());
+
+                if (!Double.isNaN(sentimentScore)) {
+
+                    BigDecimal sentimentScoreRounded = BigDecimal.valueOf(sentimentScore).setScale(5, RoundingMode.HALF_UP);
+
+                    MapWritable aspectClassification = new MapWritable();
+
+                    aspectClassification.put(new Text("sentence"), aspectMap.get(new Text("sentence")));
+                    aspectClassification.put(new Text("aspectWord"), aspectMap.get(new Text("aspectWord")));
+                    aspectClassification.put(
+                        new Text("sentimentScore"),
+                        new Text(sentimentScoreRounded.toString())
+                    );
+
+                    extractedAspectsClassified.put(new IntWritable(c), aspectClassification);
+                    c++;
                 }
-
-                if (reviewTime != null) {
-                    mapWritable.put(new Text("reviewTime"), reviewTime);
-                }
-
-                context.write(key, mapWritable);
             }
+
+            MapWritable mapWritable = new MapWritable();
+            mapWritable.put(new Text("asin"), asin);
+
+            if (reviewerName != null) {
+                mapWritable.put(new Text("reviewerName"), reviewerName);
+            }
+
+            if (reviewTime != null) {
+                mapWritable.put(new Text("reviewTime"), reviewTime);
+            }
+
+            mapWritable.put(new Text("extractedAspects"), extractedAspectsClassified);
+
+            context.write(key, mapWritable);
         }
     }
 }

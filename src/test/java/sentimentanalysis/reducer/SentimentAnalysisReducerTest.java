@@ -1,5 +1,6 @@
 package sentimentanalysis.reducer;
 
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mrunit.mapreduce.ReduceDriver;
@@ -32,12 +33,20 @@ public class SentimentAnalysisReducerTest {
         throws IOException {
 
         MapWritable review = new MapWritable();
-        review.put(new Text("sentence"), new Text("The battery was very powerful"));
-        review.put(new Text("sentenceTagged"), new Text("battery_NN very_RB powerful_JJ"));
+
         review.put(new Text("asin"), new Text("ASINString"));
-        review.put(new Text("aspectWord"), new Text("battery"));
         review.put(new Text("reviewerName"), new Text("John Smith"));
         review.put(new Text("reviewTime"), new Text("09 13, 2009"));
+
+        MapWritable extractedAspects = new MapWritable();
+
+        MapWritable battery = new MapWritable();
+        battery.put(new Text("aspectWord"), new Text("battery"));
+        battery.put(new Text("sentence"), new Text("The battery was very powerful"));
+        battery.put(new Text("sentenceTagged"), new Text("battery_NN very_RB powerful_JJ"));
+
+        extractedAspects.put(new IntWritable(0), battery);
+        review.put(new Text("extractedAspects"), extractedAspects);
 
         Text inputKey = new Text("ASINString");
         List<MapWritable> inputValues = new ArrayList<>();
@@ -50,11 +59,15 @@ public class SentimentAnalysisReducerTest {
         assertThat(output.get(0).getFirst(), is(new Text("ASINString")));
 
         assertThat(doc1.get(new Text("asin")), is(new Text("ASINString")));
-        assertThat(doc1.get(new Text("sentence")), is(new Text("The battery was very powerful")));
-        assertThat(doc1.get(new Text("aspectWord")), is(new Text("battery")));
         assertThat(doc1.get(new Text("reviewerName")), is(new Text("John Smith")));
         assertThat(doc1.get(new Text("reviewTime")), is(new Text("09 13, 2009")));
-        assertThat(Double.parseDouble(doc1.get(new Text("sentimentScore")).toString()), greaterThan(0.0));
+
+        MapWritable extractedAspectsResult = (MapWritable) doc1.get(new Text("extractedAspects"));
+
+        MapWritable batteryResult = (MapWritable) extractedAspectsResult.get(new IntWritable(0));
+        assertThat(batteryResult.get(new Text("sentence")), is(new Text("The battery was very powerful")));
+        assertThat(batteryResult.get(new Text("aspectWord")), is(new Text("battery")));
+        assertThat(Double.parseDouble(batteryResult.get(new Text("sentimentScore")).toString()), greaterThan(0.0));
     }
 
     @Test
@@ -62,12 +75,20 @@ public class SentimentAnalysisReducerTest {
         IOException {
 
         MapWritable review = new MapWritable();
-        review.put(new Text("sentence"), new Text("The screen was not good value for money"));
-        review.put(new Text("sentenceTagged"), new Text("not_RB good_JJ value_NN money_NN"));
+
         review.put(new Text("asin"), new Text("ABCDEFG123"));
-        review.put(new Text("aspectWord"), new Text("screen"));
         review.put(new Text("reviewerName"), new Text("Bill Jones"));
         review.put(new Text("reviewTime"), new Text("01 01, 2012"));
+
+        MapWritable extractedAspects = new MapWritable();
+
+        MapWritable screen = new MapWritable();
+        screen.put(new Text("aspectWord"), new Text("screen"));
+        screen.put(new Text("sentence"), new Text("The screen was not good value for money"));
+        screen.put(new Text("sentenceTagged"), new Text("not_RB good_JJ value_NN money_NN"));
+
+        extractedAspects.put(new IntWritable(0), screen);
+        review.put(new Text("extractedAspects"), extractedAspects);
 
         Text inputKey = new Text("ABCDEFG123");
         List<MapWritable> inputValues = new ArrayList<>();
@@ -80,10 +101,14 @@ public class SentimentAnalysisReducerTest {
         assertThat(output.get(0).getFirst(), is(new Text("ABCDEFG123")));
 
         assertThat(doc1.get(new Text("asin")), is(new Text("ABCDEFG123")));
-        assertThat(doc1.get(new Text("sentence")), is(new Text("The screen was not good value for money")));
-        assertThat(doc1.get(new Text("aspectWord")), is(new Text("screen")));
         assertThat(doc1.get(new Text("reviewerName")), is(new Text("Bill Jones")));
         assertThat(doc1.get(new Text("reviewTime")), is(new Text("01 01, 2012")));
-        assertThat(Double.parseDouble(doc1.get(new Text("sentimentScore")).toString()), lessThan(0.0));
+
+        MapWritable extractedAspectsResult = (MapWritable) doc1.get(new Text("extractedAspects"));
+
+        MapWritable screenResult = (MapWritable) extractedAspectsResult.get(new IntWritable(0));
+        assertThat(screenResult.get(new Text("sentence")), is(new Text("The screen was not good value for money")));
+        assertThat(screenResult.get(new Text("aspectWord")), is(new Text("screen")));
+        assertThat(Double.parseDouble(screenResult.get(new Text("sentimentScore")).toString()), lessThan(0.0));
     }
 }
