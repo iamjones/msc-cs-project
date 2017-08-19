@@ -122,4 +122,27 @@ public class SentimentAnalysisMapperTest {
         assertThat(screen.get(new Text("aspectWord")), is(new Text("screen")));
         assertThat(screen.get(new Text("sentenceTagged")), is(new Text("display_NN feel_VB really_RB")));
     }
+
+    @Test
+    public void it_should_not_write_reviews_where_no_aspect_words_are_found() throws IOException {
+
+        String testJson = "{"
+            + "\"reviewerID\": \"AO94DHGC771SJ\","
+            + "\"asin\": \"0528881469\","
+            + "\"reviewerName\": \"amazdnu\","
+            + "\"helpful\": [0, 0],"
+            + "\"reviewText\": \"The review contains no aspect words.\","
+            + "\"overall\": 5.0,"
+            + "\"summary\": \"Gotta have GPS!\","
+            + "\"unixReviewTime\": 1370131200,"
+            + "\"reviewTime\": \"06 2, 2013\""
+        + "}";
+
+        LongWritable inputKey = new LongWritable(1);
+        Text inputValue = new Text(testJson);
+
+        List<Pair<Text, MapWritable>> output = sentimentAnalysisMapper.withInput(inputKey, inputValue).run();
+
+        assertThat(output.size(), is(0));
+    }
 }

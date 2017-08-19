@@ -12,7 +12,7 @@ c = 10
 
 # Builds a jar of the project
 build:
-	mvn package
+	mvn clean package
 
 # Run the aspect discovery job locally on a small set of real data
 # For example

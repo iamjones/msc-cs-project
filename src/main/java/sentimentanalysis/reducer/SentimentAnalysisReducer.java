@@ -44,9 +44,6 @@ public class SentimentAnalysisReducer extends Reducer<Text, MapWritable, Text, M
         for (MapWritable review : values) {
 
             Writable asin               = review.get(new Text("asin"));
-//            Writable sentence           = review.get(new Text("sentence"));
-//            Writable sentenceTagged     = review.get(new Text("sentenceTagged"));
-//            Writable aspectWord         = review.get(new Text("aspectWord"));
             Writable reviewerName       = review.get(new Text("reviewerName"));
             Writable reviewTime         = review.get(new Text("reviewTime"));
 

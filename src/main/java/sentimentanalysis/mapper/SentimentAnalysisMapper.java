@@ -98,16 +98,6 @@ public class SentimentAnalysisMapper extends Mapper<LongWritable, Text, Text, Ma
 
                 String sentenceTagged = this.tagger.tagTokenizedString(s);
 
-                mapWritable.put(new Text("asin"), new Text(review.getAsin().trim()));
-
-                if (review.getReviewerName() != null) {
-                    mapWritable.put(new Text("reviewerName"), new Text(review.getReviewerName().trim()));
-                }
-
-                if (review.getReviewTime() != null) {
-                    mapWritable.put(new Text("reviewTime"), new Text(review.getReviewTime().trim()));
-                }
-
                 for (String aspectWord : foundAspectWords) {
 
                     String phrase = this.posTags.isAdverbInRangeOfAspectWord(sentenceTagged, aspectWord, 5);
@@ -125,8 +115,20 @@ public class SentimentAnalysisMapper extends Mapper<LongWritable, Text, Text, Ma
                 }
             }
 
-            mapWritable.put(new Text("extractedAspects"), extractedAspects);
-            context.write(new Text(review.getAsin()), mapWritable);
+            if (extractedAspects.size() > 0) {
+                mapWritable.put(new Text("asin"), new Text(review.getAsin().trim()));
+
+                if (review.getReviewerName() != null) {
+                    mapWritable.put(new Text("reviewerName"), new Text(review.getReviewerName().trim()));
+                }
+
+                if (review.getReviewTime() != null) {
+                    mapWritable.put(new Text("reviewTime"), new Text(review.getReviewTime().trim()));
+                }
+
+                mapWritable.put(new Text("extractedAspects"), extractedAspects);
+                context.write(new Text(review.getAsin()), mapWritable);
+            }
 
         } catch (IOException | InterruptedException e) {
             // @TODO - log this somewhere useful
