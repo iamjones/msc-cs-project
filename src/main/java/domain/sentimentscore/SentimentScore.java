@@ -15,7 +15,17 @@ public class SentimentScore {
      */
     public Double calculateOverallSentiment(Double positive, Double negative) {
 
-        Double overallSentiment = DoubleMath.log2(positive / negative) / 2;
+        Double overallSentiment;
+
+        if (positive == 0.0 && negative == 0.0) {
+            overallSentiment = DoubleMath.log2(positive / negative) / 2;
+        } else if (positive == 0.0) {
+            overallSentiment = DoubleMath.log2(negative) / 2;
+        } else if (negative == 0.0) {
+            overallSentiment = DoubleMath.log2(positive) / 2;
+        } else {
+            overallSentiment = DoubleMath.log2(positive / negative) / 2;
+        }
 
         if (overallSentiment.isNaN()) {
             return 0.0;

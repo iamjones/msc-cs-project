@@ -48,6 +48,16 @@ public class SentimentScoreTest {
     }
 
     @Test
+    public void it_should_calulate_the_overall_sentiment_when_the_negative_value_is_zero() {
+        Double positive = 1.0;
+        Double negative = 0.0;
+
+        Double overallSentiment = this.sentimentScore.calculateOverallSentiment(positive, negative);
+
+        assertThat(overallSentiment, is(0.0));
+    }
+
+    @Test
     public void it_should_calculate_the_rating_for_a_neutral_sentiment_correctly() {
 
         Double overallSentiment = 0.0;

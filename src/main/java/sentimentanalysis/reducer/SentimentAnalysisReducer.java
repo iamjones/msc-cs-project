@@ -2,6 +2,8 @@ package sentimentanalysis.reducer;
 
 import domain.sentimentanalysis.SentimentAnalysis;
 import domain.sentimentanalysis.sentiwordnet.SentiWordNetSentimentAnalysis;
+import domain.sentimentscore.SentimentScore;
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
@@ -20,9 +22,13 @@ public class SentimentAnalysisReducer extends Reducer<Text, MapWritable, Text, M
 
     private SentimentAnalysis sentimentAnalysis;
 
+    private SentimentScore sentimentScore;
+
     @Override
     public void setup(Reducer.Context context) {
+
         this.sentimentAnalysis = new SentiWordNetSentimentAnalysis();
+        this.sentimentScore    = new SentimentScore();
     }
 
     /**
@@ -55,11 +61,19 @@ public class SentimentAnalysisReducer extends Reducer<Text, MapWritable, Text, M
             MapWritable extractedAspectsClassified = new MapWritable();
 
             int c = 0;
+            Double positiveScore = 0.0;
+            Double negativeScore = 0.0;
             for (Map.Entry extractedAspect : extractedAspects.entrySet()) {
 
                 MapWritable aspectMap = (MapWritable) extractedAspect.getValue();
 
                 Double sentimentScore = this.sentimentAnalysis.getSentiment(aspectMap.get(new Text("sentenceTagged")).toString());
+
+                if (sentimentScore > 0) {
+                    positiveScore = positiveScore + sentimentScore;
+                } else if (sentimentScore < 0) {
+                    negativeScore = negativeScore + sentimentScore;
+                }
 
                 if (!Double.isNaN(sentimentScore)) {
 
@@ -79,10 +93,14 @@ public class SentimentAnalysisReducer extends Reducer<Text, MapWritable, Text, M
                 }
             }
 
+            Double overallSentimentScore = this.sentimentScore.calculateOverallSentiment(positiveScore, negativeScore);
+
             MapWritable mapWritable = new MapWritable();
 
             mapWritable.put(new Text("asin"), asin);
-            mapWritable.put(new Text("overall"), overall);
+            mapWritable.put(new Text("userRating"), overall);
+            mapWritable.put(new Text("overallSentimentScore"), new DoubleWritable(overallSentimentScore));
+            mapWritable.put(new Text("predictedRating"), new DoubleWritable(this.sentimentScore.calculateStarRatingFromOverallSentiment(overallSentimentScore)));
 
             if (reviewerName != null) {
                 mapWritable.put(new Text("reviewerName"), reviewerName);

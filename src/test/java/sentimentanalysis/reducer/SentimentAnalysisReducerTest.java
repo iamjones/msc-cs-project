@@ -63,7 +63,9 @@ public class SentimentAnalysisReducerTest {
         assertThat(doc1.get(new Text("asin")), is(new Text("ASINString")));
         assertThat(doc1.get(new Text("reviewerName")), is(new Text("John Smith")));
         assertThat(doc1.get(new Text("reviewTime")), is(new Text("09 13, 2009")));
-        assertThat(doc1.get(new Text("overall")), is(new DoubleWritable(4.0)));
+        assertThat(doc1.get(new Text("userRating")), is(new DoubleWritable(4.0)));
+//        assertThat(doc1.get(new Text("overallSentimentScore")), is(new DoubleWritable(4.0)));
+//        assertThat(doc1.get(new Text("predictedRating")), is(new DoubleWritable(4.0)));
 
         MapWritable extractedAspectsResult = (MapWritable) doc1.get(new Text("extractedAspects"));
 
@@ -107,7 +109,7 @@ public class SentimentAnalysisReducerTest {
         assertThat(doc1.get(new Text("asin")), is(new Text("ABCDEFG123")));
         assertThat(doc1.get(new Text("reviewerName")), is(new Text("Bill Jones")));
         assertThat(doc1.get(new Text("reviewTime")), is(new Text("01 01, 2012")));
-        assertThat(doc1.get(new Text("overall")), is(new DoubleWritable(2.0)));
+        assertThat(doc1.get(new Text("userRating")), is(new DoubleWritable(2.0)));
 
         MapWritable extractedAspectsResult = (MapWritable) doc1.get(new Text("extractedAspects"));
 
