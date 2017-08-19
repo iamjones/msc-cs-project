@@ -46,6 +46,7 @@ public class SentimentAnalysisReducer extends Reducer<Text, MapWritable, Text, M
             Writable asin               = review.get(new Text("asin"));
             Writable reviewerName       = review.get(new Text("reviewerName"));
             Writable reviewTime         = review.get(new Text("reviewTime"));
+            Writable overall            = review.get(new Text("overall"));
 
             MapWritable extractedAspects = (MapWritable) review.get(new Text("extractedAspects"));
 
@@ -79,7 +80,9 @@ public class SentimentAnalysisReducer extends Reducer<Text, MapWritable, Text, M
             }
 
             MapWritable mapWritable = new MapWritable();
+
             mapWritable.put(new Text("asin"), asin);
+            mapWritable.put(new Text("overall"), overall);
 
             if (reviewerName != null) {
                 mapWritable.put(new Text("reviewerName"), reviewerName);

@@ -1,5 +1,6 @@
 package sentimentanalysis.reducer;
 
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
@@ -37,6 +38,7 @@ public class SentimentAnalysisReducerTest {
         review.put(new Text("asin"), new Text("ASINString"));
         review.put(new Text("reviewerName"), new Text("John Smith"));
         review.put(new Text("reviewTime"), new Text("09 13, 2009"));
+        review.put(new Text("overall"), new DoubleWritable(4.0));
 
         MapWritable extractedAspects = new MapWritable();
 
@@ -61,6 +63,7 @@ public class SentimentAnalysisReducerTest {
         assertThat(doc1.get(new Text("asin")), is(new Text("ASINString")));
         assertThat(doc1.get(new Text("reviewerName")), is(new Text("John Smith")));
         assertThat(doc1.get(new Text("reviewTime")), is(new Text("09 13, 2009")));
+        assertThat(doc1.get(new Text("overall")), is(new DoubleWritable(4.0)));
 
         MapWritable extractedAspectsResult = (MapWritable) doc1.get(new Text("extractedAspects"));
 
@@ -79,6 +82,7 @@ public class SentimentAnalysisReducerTest {
         review.put(new Text("asin"), new Text("ABCDEFG123"));
         review.put(new Text("reviewerName"), new Text("Bill Jones"));
         review.put(new Text("reviewTime"), new Text("01 01, 2012"));
+        review.put(new Text("overall"), new DoubleWritable(2.0));
 
         MapWritable extractedAspects = new MapWritable();
 
@@ -103,6 +107,7 @@ public class SentimentAnalysisReducerTest {
         assertThat(doc1.get(new Text("asin")), is(new Text("ABCDEFG123")));
         assertThat(doc1.get(new Text("reviewerName")), is(new Text("Bill Jones")));
         assertThat(doc1.get(new Text("reviewTime")), is(new Text("01 01, 2012")));
+        assertThat(doc1.get(new Text("overall")), is(new DoubleWritable(2.0)));
 
         MapWritable extractedAspectsResult = (MapWritable) doc1.get(new Text("extractedAspects"));
 

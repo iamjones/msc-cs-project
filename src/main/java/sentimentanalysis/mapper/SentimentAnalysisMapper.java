@@ -7,6 +7,7 @@ import domain.punctuation.Punctuation;
 import domain.stopwords.StopWords;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
@@ -116,7 +117,9 @@ public class SentimentAnalysisMapper extends Mapper<LongWritable, Text, Text, Ma
             }
 
             if (extractedAspects.size() > 0) {
+
                 mapWritable.put(new Text("asin"), new Text(review.getAsin().trim()));
+                mapWritable.put(new Text("overall"), new DoubleWritable(review.getOverall()));
 
                 if (review.getReviewerName() != null) {
                     mapWritable.put(new Text("reviewerName"), new Text(review.getReviewerName().trim()));

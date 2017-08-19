@@ -1,6 +1,7 @@
 package sentimentanalysis.mapper;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
@@ -41,7 +42,7 @@ public class SentimentAnalysisMapperTest {
             + "\"helpful\": [0, 0],"
             + "\"reviewText\": \"I bought the phone but I must state that I have never had "
             + "an electrical device with a battery that performs so poorly.\","
-            + "\"overall\": 5.0,"
+            + "\"overall\": 1.0,"
             + "\"summary\": \"Gotta have GPS!\","
             + "\"unixReviewTime\": 1370131200,"
             + "\"reviewTime\": \"06 2, 2013\""
@@ -64,6 +65,7 @@ public class SentimentAnalysisMapperTest {
         assertThat(rsp1.get(new Text("asin")), is(new Text("0528881469")));
         assertThat(rsp1.get(new Text("reviewerName")), is(new Text("amazdnu")));
         assertThat(rsp1.get(new Text("reviewTime")), is(new Text("06 2, 2013")));
+        assertThat(rsp1.get(new Text("overall")), is(new DoubleWritable(1.0)));
 
         MapWritable extractedAspects = (MapWritable) rsp1.get(new Text("extractedAspects"));
 
@@ -85,7 +87,7 @@ public class SentimentAnalysisMapperTest {
             + "\"reviewText\": \"I bought the phone but I must state that I have never had "
             + "an electrical device with a battery that performs so poorly."
             + "I really feel that the display and screen were perfectly implemented.\","
-            + "\"overall\": 5.0,"
+            + "\"overall\": 3.0,"
             + "\"summary\": \"Gotta have GPS!\","
             + "\"unixReviewTime\": 1370131200,"
             + "\"reviewTime\": \"06 2, 2013\""
@@ -104,6 +106,7 @@ public class SentimentAnalysisMapperTest {
         assertThat(rsp1.get(new Text("asin")), is(new Text("0528881469")));
         assertThat(rsp1.get(new Text("reviewerName")), is(new Text("amazdnu")));
         assertThat(rsp1.get(new Text("reviewTime")), is(new Text("06 2, 2013")));
+        assertThat(rsp1.get(new Text("overall")), is(new DoubleWritable(3.0)));
 
         MapWritable extractedAspects = (MapWritable) rsp1.get(new Text("extractedAspects"));
 
@@ -132,7 +135,7 @@ public class SentimentAnalysisMapperTest {
             + "\"reviewerName\": \"amazdnu\","
             + "\"helpful\": [0, 0],"
             + "\"reviewText\": \"The review contains no aspect words.\","
-            + "\"overall\": 5.0,"
+            + "\"overall\": 4.0,"
             + "\"summary\": \"Gotta have GPS!\","
             + "\"unixReviewTime\": 1370131200,"
             + "\"reviewTime\": \"06 2, 2013\""
