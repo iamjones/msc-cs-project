@@ -1,7 +1,10 @@
 package aspectdiscovery;
 
 import aspectdiscovery.mapper.AspectDiscoveryMapper;
+import aspectdiscovery.mapper.AspectDiscoverySortMapper;
+import aspectdiscovery.mapper.AspectDiscoverySortWritableComparitor;
 import aspectdiscovery.reducer.AspectDiscoveryReducer;
+import aspectdiscovery.reducer.AspectDiscoverySortReducer;
 import domain.validation.TaskParameterValidator;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -36,13 +39,9 @@ public class AspectDiscovery {
 
         Configuration configuration = new Configuration();
 
-        // Set up our dependency injection modules
-//        Guice.createInjector(new SentimentAnalysisMapperModule());
-
-        Job job = Job.getInstance(configuration, "dictionarybuilder");
+        Job job = Job.getInstance(configuration, "aspectDiscovery");
         job.setJarByClass(AspectDiscovery.class);
         job.setMapperClass(AspectDiscoveryMapper.class);
-//        job.setCombinerClass();
         job.setReducerClass(AspectDiscoveryReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
@@ -50,6 +49,23 @@ public class AspectDiscovery {
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
-        System.exit(job.waitForCompletion(true) ? 1 : 0);
+        if (job.waitForCompletion(true)) {
+
+            Configuration configuration2 = new Configuration();
+            Job job2 = Job.getInstance(configuration2, "aspectDiscoverySort");
+
+            job2.setJarByClass(AspectDiscovery.class);
+            job2.setMapperClass(AspectDiscoverySortMapper.class);
+            job2.setReducerClass(AspectDiscoverySortReducer.class);
+            job2.setOutputKeyClass(IntWritable.class);
+            job2.setOutputValueClass(Text.class);
+            job2.setSortComparatorClass(AspectDiscoverySortWritableComparitor.class);
+
+            FileInputFormat.addInputPath(job2, new Path(args[1]));
+            FileOutputFormat.setOutputPath(job2, new Path(args[1] + "sorted"));
+
+            System.exit(job2.waitForCompletion(true) ? 1 : 0);
+        }
+
     }
 }

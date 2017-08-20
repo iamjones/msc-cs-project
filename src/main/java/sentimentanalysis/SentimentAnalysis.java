@@ -1,6 +1,5 @@
 package sentimentanalysis;
 
-import com.google.inject.Guice;
 import domain.validation.TaskParameterValidator;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -10,7 +9,6 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.elasticsearch.hadoop.mr.EsOutputFormat;
 import sentimentanalysis.mapper.SentimentAnalysisMapper;
-import sentimentanalysis.mapper.SentimentAnalysisMapperModule;
 import sentimentanalysis.reducer.SentimentAnalysisReducer;
 
 import java.io.IOException;
@@ -41,9 +39,6 @@ public class SentimentAnalysis {
         configuration.set("es.nodes", "localhost:9200");
         configuration.set("es.resource", "reviews/review"); // index or indices used for storing data
         configuration.set("es.index.auto.create", "yes");
-
-        // Set up our dependency injection modules
-        Guice.createInjector(new SentimentAnalysisMapperModule());
 
         configuration.set("aspectWordsFilePath", args[1]);
 

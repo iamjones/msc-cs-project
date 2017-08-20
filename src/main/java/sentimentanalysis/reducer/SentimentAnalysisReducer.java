@@ -93,26 +93,29 @@ public class SentimentAnalysisReducer extends Reducer<Text, MapWritable, Text, M
                 }
             }
 
-            Double overallSentimentScore = this.sentimentScore.calculateOverallSentiment(positiveScore, negativeScore);
+            if (extractedAspectsClassified.size() > 0) {
 
-            MapWritable mapWritable = new MapWritable();
+                Double overallSentimentScore = this.sentimentScore.calculateOverallSentiment(positiveScore, negativeScore);
 
-            mapWritable.put(new Text("asin"), asin);
-            mapWritable.put(new Text("userRating"), overall);
-            mapWritable.put(new Text("overallSentimentScore"), new DoubleWritable(overallSentimentScore));
-            mapWritable.put(new Text("predictedRating"), new DoubleWritable(this.sentimentScore.calculateStarRatingFromOverallSentiment(overallSentimentScore)));
+                MapWritable mapWritable = new MapWritable();
 
-            if (reviewerName != null) {
-                mapWritable.put(new Text("reviewerName"), reviewerName);
+                mapWritable.put(new Text("asin"), asin);
+                mapWritable.put(new Text("userRating"), overall);
+                mapWritable.put(new Text("overallSentimentScore"), new DoubleWritable(overallSentimentScore));
+                mapWritable.put(new Text("predictedRating"), new DoubleWritable(this.sentimentScore.calculateStarRatingFromOverallSentiment(overallSentimentScore)));
+
+                if (reviewerName != null) {
+                    mapWritable.put(new Text("reviewerName"), reviewerName);
+                }
+
+                if (reviewTime != null) {
+                    mapWritable.put(new Text("reviewTime"), reviewTime);
+                }
+
+                mapWritable.put(new Text("extractedAspects"), extractedAspectsClassified);
+
+                context.write(key, mapWritable);
             }
-
-            if (reviewTime != null) {
-                mapWritable.put(new Text("reviewTime"), reviewTime);
-            }
-
-            mapWritable.put(new Text("extractedAspects"), extractedAspectsClassified);
-
-            context.write(key, mapWritable);
         }
     }
 }
