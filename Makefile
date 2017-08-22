@@ -7,6 +7,9 @@ outputDir = src/main/resources/
 # Aspect words file for running locally
 aspectWordsFile = src/main/resources/aspectwords/aspectwords-test.json
 
+# 2500 of the most frequent aspect words for the whole data set
+aspectWordsAll = src/main/resources/aspectwords/aspectwords-all.json
+
 # Set a default value for the test job
 c = 10
 
@@ -38,4 +41,4 @@ build-sentiment-analyser-test: build
 # Run the dictionary builder job locally on the full data set
 build-sentiment-analyser: build
 	./elasticsearch.sh
-	hadoop jar target/msc-cs-project.jar sentimentanalysis.SentimentAnalysis $(inputDir)all_reviews.json $(aspectWordsFile)
+	hadoop jar target/msc-cs-project.jar sentimentanalysis.SentimentAnalysis $(inputDir)all_reviews.json $(aspectWordsAll)
