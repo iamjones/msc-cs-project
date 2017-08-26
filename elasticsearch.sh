@@ -29,3 +29,8 @@ fi
 
 # Sleep for 60 seconds to allow Elasticsearch to start
 sleep 60
+
+curl -XPUT localhost:9200/reviews
+
+# Increase the total number of fields just in case
+curl -XPUT localhost:9200/reviews/_settings -d '{"index.mapping.total_fields.limit": 10000}'

@@ -42,3 +42,6 @@ build-sentiment-analyser-test: build
 build-sentiment-analyser: build
 	./elasticsearch.sh
 	hadoop jar target/msc-cs-project.jar sentimentanalysis.SentimentAnalysis $(inputDir)all_reviews.json $(aspectWordsAll)
+
+build-rmse-calculation: build
+	mvn exec:java
