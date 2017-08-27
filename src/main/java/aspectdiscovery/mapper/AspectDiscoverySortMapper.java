@@ -18,8 +18,6 @@ public class AspectDiscoverySortMapper extends Mapper<LongWritable, Text, IntWri
         try {
             String[] parts = value.toString().split("\\s+");
 
-            System.out.println("Count: " + parts[1].trim() + " Word: " + parts[0].trim());
-
             context.write(new IntWritable(Integer.parseInt(parts[1].trim())), new Text(parts[0].trim()));
 
         } catch (IOException | InterruptedException e) {

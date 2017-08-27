@@ -62,7 +62,7 @@ public class AspectDiscovery {
             job2.setSortComparatorClass(AspectDiscoverySortWritableComparitor.class);
 
             FileInputFormat.addInputPath(job2, new Path(args[1]));
-            FileOutputFormat.setOutputPath(job2, new Path(args[1] + "sorted"));
+            FileOutputFormat.setOutputPath(job2, new Path(args[1] + "-sorted"));
 
             System.exit(job2.waitForCompletion(true) ? 1 : 0);
         }

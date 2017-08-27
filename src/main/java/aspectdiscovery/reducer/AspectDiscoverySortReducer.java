@@ -28,9 +28,6 @@ public class AspectDiscoverySortReducer extends Reducer<IntWritable, Text, Text,
         InterruptedException {
 
         for (Text v : values) {
-
-            System.out.println("Key: " + key.toString() + " Value: " + v.toString());
-
             context.write(v, key);
         }
     }
