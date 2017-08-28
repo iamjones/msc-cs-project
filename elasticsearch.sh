@@ -1,10 +1,10 @@
 #!/bin/bash
 
-ESSOURCE="src/main/resources/elasticsearch/elasticsearch-5.5.1"
+ESSOURCE="elasticsearch/elasticsearch-5.5.1"
 
 if [ ! -d "$ESSOURCE" ]; then
 	# Download the Elasticsearch source
-    wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.5.1.tar.gz -P src/main/resources/elasticsearch
+    wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.5.1.tar.gz -P elasticsearch
 
 	# Change into the resources Elasticsearch directory
 	cd src/main/resources/elasticsearch
@@ -21,7 +21,7 @@ if [ ! -d "$ESSOURCE" ]; then
 	# Remove the zipped directory as we no longer need it
     rm ../elasticsearch-5.5.1.tar.gz
 else
-	cd src/main/resources/elasticsearch/elasticsearch-5.5.1
+	cd $ESSOURCE
 fi
 
 # Start Elasticsearch

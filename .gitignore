@@ -16,6 +16,6 @@ hs_err_pid*
 
 target
 src/main/resources/input/*.json
-src/main/resources/elasticsearch/*
+elasticsearch/*
 src/main/resources/aspects-*
 src/main/resources/sentiment-*
