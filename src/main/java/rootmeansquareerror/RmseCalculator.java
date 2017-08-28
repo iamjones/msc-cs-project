@@ -1,8 +1,8 @@
-package RootMeanSquareError;
+package rootmeansquareerror;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
-import domain.entity.RootMeanSequareError.Document;
+import domain.entity.rootmeansequareerror.Document;
 import org.apache.htrace.fasterxml.jackson.databind.JsonNode;
 import org.apache.htrace.fasterxml.jackson.databind.ObjectMapper;
 

@@ -1,5 +1,6 @@
 package aspectdiscovery.reducer;
 
+import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -27,13 +28,21 @@ public class AspectDiscoveryReducer extends Reducer<Text, IntWritable, Text, Int
         IOException,
         InterruptedException {
 
-        int totalOccurrences = 0;
+        Configuration conf = context.getConfiguration();
+        String numberOfDocuments = conf.get("numberOfDocuments");
+
+        Integer totalOccurrences   = 0;
+        Double occurrenceThreshold = 0.0;
+
+        if (numberOfDocuments != null) {
+            occurrenceThreshold = Math.ceil(Integer.parseInt(numberOfDocuments) / 100);
+        }
 
         for (IntWritable v : values) {
             totalOccurrences += v.get();
         }
 
-        if (totalOccurrences >= 3) {
+        if (totalOccurrences > occurrenceThreshold) {
             context.write(key, new IntWritable(totalOccurrences));
         }
     }

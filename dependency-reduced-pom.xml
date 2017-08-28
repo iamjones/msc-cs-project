@@ -54,7 +54,7 @@
           </execution>
         </executions>
         <configuration>
-          <mainClass>RootMeanSquareError.RmseCalculator</mainClass>
+          <mainClass>rootmeansquareerror.RmseCalculator</mainClass>
         </configuration>
       </plugin>
     </plugins>

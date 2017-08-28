@@ -1,4 +1,4 @@
-package domain.entity.RootMeanSequareError;
+package domain.entity.rootmeansequareerror;
 
 import org.apache.htrace.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

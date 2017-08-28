@@ -22,18 +22,22 @@ build:
 # - make build-aspect-discovery-test c=10
 # - make build-aspect-discovery-test c=25
 # - make build-aspect-discovery-test c=100
+# - make build-aspect-discovery-test c=500
+# - make build-aspect-discovery-test c=100000
 build-aspect-discovery-test: build
-	hadoop jar target/msc-cs-project.jar aspectdiscovery.AspectDiscovery $(inputDir)$(c)_reviews.json $(outputDir)aspects-$$RANDOM
+	hadoop jar target/msc-cs-project.jar aspectdiscovery.AspectDiscovery $(inputDir)$(c)_reviews.json $(outputDir)aspects-$$RANDOM $(c)
 
 # Run the aspect discovery job locally on the full data set
 build-aspect-discovery: build
-	hadoop jar target/msc-cs-project.jar aspectdiscovery.AspectDiscovery $(inputDir)all_reviews.json $(outputDir)aspects-$$RANDOM
+	hadoop jar target/msc-cs-project.jar aspectdiscovery.AspectDiscovery $(inputDir)all_reviews.json $(outputDir)aspects-$$RANDOM 1689188
 
 # Run the sentiment analyser job locally on a small set of real data
 # For example
 # - make build-sentiment-analyser-test c=10
 # - make build-sentiment-analyser-test c=25
 # - make build-sentiment-analyser-test c=100
+# - make build-sentiment-analyser-test c=500
+# - make build-sentiment-analyser-test c=100000
 build-sentiment-analyser-test: build
 	./elasticsearch.sh
 	hadoop jar target/msc-cs-project.jar sentimentanalysis.SentimentAnalysis $(inputDir)$(c)_reviews.json $(aspectWordsFile)

@@ -1,7 +1,7 @@
-package domain.entity.RootMeanSquareError;
+package domain.entity.rootmeansquareerror;
 
-import domain.entity.RootMeanSequareError.Document;
-import domain.entity.RootMeanSequareError.Review;
+import domain.entity.rootmeansequareerror.Document;
+import domain.entity.rootmeansequareerror.Review;
 import org.junit.Before;
 import org.junit.Test;
 

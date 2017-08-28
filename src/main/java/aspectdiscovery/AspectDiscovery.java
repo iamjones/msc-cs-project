@@ -38,6 +38,7 @@ public class AspectDiscovery {
         taskParameterValidator.checkOutputPath(args);
 
         Configuration configuration = new Configuration();
+        configuration.set("numberOfDocuments", args[2]);
 
         Job job = Job.getInstance(configuration, "aspectDiscovery");
         job.setJarByClass(AspectDiscovery.class);

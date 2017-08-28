@@ -1,6 +1,6 @@
-package domain.entity.RootMeanSquareError;
+package domain.entity.rootmeansquareerror;
 
-import domain.entity.RootMeanSequareError.Aspect;
+import domain.entity.rootmeansequareerror.Aspect;
 import org.junit.Before;
 import org.junit.Test;
 
