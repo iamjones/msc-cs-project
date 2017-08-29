@@ -19,11 +19,6 @@ public class AspectDiscoverySortWritableComparitor extends WritableComparator {
         IntWritable key1 = (IntWritable) w1;
         IntWritable key2 = (IntWritable) w2;
 
-        System.out.println("One: ");
-        System.out.println(w1);
-        System.out.println("Two: ");
-        System.out.println(w2);
-
         return -1 * key1.compareTo(key2);
     }
 }
