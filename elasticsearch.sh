@@ -7,7 +7,7 @@ if [ ! -d "$ESSOURCE" ]; then
     wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.5.1.tar.gz -P elasticsearch
 
 	# Change into the resources Elasticsearch directory
-	cd src/main/resources/elasticsearch
+	cd elasticsearch
 
 	# Verify the download
 	sha1sum elasticsearch-5.5.1.tar.gz

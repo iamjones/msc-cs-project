@@ -35,7 +35,7 @@ public class AspectDiscoveryReducer extends Reducer<Text, IntWritable, Text, Int
         Double occurrenceThreshold = 0.0;
 
         if (numberOfDocuments != null) {
-            occurrenceThreshold = Math.ceil(Integer.parseInt(numberOfDocuments) / 100);
+            occurrenceThreshold = Math.ceil(Integer.parseInt(numberOfDocuments) / 400);
         }
 
         for (IntWritable v : values) {

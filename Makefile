@@ -14,8 +14,9 @@ aspectWordsAll = src/main/resources/aspectwords/aspectwords-all.json
 c = 10
 
 # Builds a jar of the project
+.PHONY: build
 build:
-	mvn -e -X clean package
+	mvn clean package
 
 # Run the aspect discovery job locally on a small set of real data
 # For example
@@ -24,10 +25,12 @@ build:
 # - make build-aspect-discovery-test c=100
 # - make build-aspect-discovery-test c=500
 # - make build-aspect-discovery-test c=100000
+.PHONY: build-aspect-discovery-test
 build-aspect-discovery-test: build
 	hadoop jar target/msc-cs-project.jar aspectdiscovery.AspectDiscovery $(inputDir)$(c)_reviews.json $(outputDir)aspects-$$RANDOM $(c)
 
 # Run the aspect discovery job locally on the full data set
+.PHONY: build-aspect-discovery
 build-aspect-discovery: build
 	hadoop jar target/msc-cs-project.jar aspectdiscovery.AspectDiscovery $(inputDir)all_reviews.json $(outputDir)aspects-$$RANDOM 1689188
 
@@ -38,14 +41,17 @@ build-aspect-discovery: build
 # - make build-sentiment-analyser-test c=100
 # - make build-sentiment-analyser-test c=500
 # - make build-sentiment-analyser-test c=100000
+.PHONY: build-sentiment-analyser-test
 build-sentiment-analyser-test: build
 	./elasticsearch.sh
 	hadoop jar target/msc-cs-project.jar sentimentanalysis.SentimentAnalysis $(inputDir)$(c)_reviews.json $(aspectWordsFile)
 
 # Run the dictionary builder job locally on the full data set
+.PHONY: build-sentiment-analyser
 build-sentiment-analyser: build
 	./elasticsearch.sh
 	hadoop jar target/msc-cs-project.jar sentimentanalysis.SentimentAnalysis $(inputDir)all_reviews.json $(aspectWordsAll)
 
+.PHONY: build-rmse-calculation
 build-rmse-calculation: build
 	mvn exec:java
