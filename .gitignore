@@ -15,7 +15,6 @@ hs_err_pid*
 .DS_Store
 
 target
-src/main/resources/input/*.json
 elasticsearch/*
-src/main/resources/aspects-*
+src/main/resources/aspectwords-hadoop
 src/main/resources/sentiment-*
