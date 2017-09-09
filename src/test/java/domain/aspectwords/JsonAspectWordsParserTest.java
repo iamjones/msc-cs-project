@@ -12,16 +12,16 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 
-public class AspectWordsParserTest {
+public class JsonAspectWordsParserTest {
 
-    private AspectWordsParser aspectWordsParser;
+    private JsonAspectWordsParser jsonAspectWordsParser;
 
     @Rule
     public ExpectedException exceptions = ExpectedException.none();
 
     @Before
     public void setup() {
-        this.aspectWordsParser = new AspectWordsParser();
+        this.jsonAspectWordsParser = new JsonAspectWordsParser();
     }
 
     @Test
@@ -32,7 +32,7 @@ public class AspectWordsParserTest {
         exceptions.expect(IllegalArgumentException.class);
         exceptions.expectMessage("File '" + wrongFilePath + "' does not exist.");
 
-        this.aspectWordsParser.parse(wrongFilePath);
+        this.jsonAspectWordsParser.parse(wrongFilePath);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class AspectWordsParserTest {
         exceptions.expect(IllegalArgumentException.class);
         exceptions.expectMessage("File does not contain any aspect words.");
 
-        this.aspectWordsParser.parse(zeroAspectWords);
+        this.jsonAspectWordsParser.parse(zeroAspectWords);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class AspectWordsParserTest {
 
         String correctAspectWords = "src/test/resources/aspectwords/aspect-words.json";
 
-        AspectWords aspectWords = this.aspectWordsParser.parse(correctAspectWords);
+        AspectWords aspectWords = this.jsonAspectWordsParser.parse(correctAspectWords);
 
         List<String> aw = aspectWords.getAspectWords();
 

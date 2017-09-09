@@ -33,7 +33,7 @@ public class SentimentAnalysisMapperTest {
         Mapper.Context context = sentimentAnalysisMapper.getContext();
         Configuration configuration = context.getConfiguration();
 
-        configuration.set("aspectWordsFilePath", "src/test/resources/aspectwords/aspect-words.json");
+        configuration.set("aspectWordsFilePath", "src/test/resources/aspectwords/hadoop-aspect-words");
 
         testJson = "{"
             + "\"reviewerID\": \"AO94DHGC771SJ\","

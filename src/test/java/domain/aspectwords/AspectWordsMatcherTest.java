@@ -15,7 +15,7 @@ public class AspectWordsMatcherTest {
 
     @Before
     public void setup() {
-        this.aspectWordsMatcher = new AspectWordsMatcher("src/test/resources/aspectwords/aspect-words.json");
+        this.aspectWordsMatcher = new AspectWordsMatcher("src/test/resources/aspectwords/hadoop-aspect-words");
     }
 
     @Test

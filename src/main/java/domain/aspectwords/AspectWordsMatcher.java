@@ -20,8 +20,8 @@ public class AspectWordsMatcher {
     public AspectWordsMatcher(String aspectWordFilePath) {
 
         // Parse the file containing the aspect words into an AspectWords entity
-        AspectWordsParser aspectWordsParser = new AspectWordsParser();
-        this.aspectWords = aspectWordsParser.parse(aspectWordFilePath);
+        HadoopAspectWordsParser hadoopAspectWordsParser = new HadoopAspectWordsParser();
+        this.aspectWords = hadoopAspectWordsParser.parse(aspectWordFilePath);
     }
 
     /**

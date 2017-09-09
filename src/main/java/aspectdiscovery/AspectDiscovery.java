@@ -50,6 +50,8 @@ public class AspectDiscovery {
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
+        System.exit(job.waitForCompletion(true) ? 1 : 0);
+
         if (job.waitForCompletion(true)) {
 
             Configuration configuration2 = new Configuration();

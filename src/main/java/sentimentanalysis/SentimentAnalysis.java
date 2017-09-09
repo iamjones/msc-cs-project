@@ -34,8 +34,8 @@ public class SentimentAnalysis {
 
         Configuration configuration = new Configuration();
 
-        configuration.setBoolean("mapred.map.tasks.speculative", false);
-        configuration.setBoolean("mapred.reduce.tasks.speculative", false);
+        configuration.setBoolean("mapred.map.tasks.speculative", true);
+        configuration.setBoolean("mapred.reduce.tasks.speculative", true);
         configuration.set("es.nodes", "localhost:9200");
         configuration.set("es.resource", "reviews/review"); // index or indices used for storing data
         configuration.set("es.index.auto.create", "yes");
