@@ -18,3 +18,5 @@ target
 elasticsearch/*
 src/main/resources/aspectwords-hadoop
 src/main/resources/sentiment-*
+src/main/resources/all_reviews.json
+src/main/resources/100000_reviews.json
