@@ -134,7 +134,6 @@ public class SentimentAnalysisMapper extends Mapper<LongWritable, Text, Text, Ma
             }
 
         } catch (IOException | InterruptedException e) {
-            // @TODO - log this somewhere useful
             System.out.println(e.getMessage());
         }
     }

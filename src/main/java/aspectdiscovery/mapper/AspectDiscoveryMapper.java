@@ -80,7 +80,6 @@ public class AspectDiscoveryMapper extends Mapper<LongWritable, Text, Text, IntW
             }
 
         } catch (IOException | InterruptedException e) {
-            // @TODO - log this to somewhere useful
             System.out.println(e.getMessage());
         }
     }

@@ -56,7 +56,6 @@ public class SentiWordNetBuilder {
             }
 
         } catch (IOException ex) {
-            // @TODO - log this somewhere useful
             System.out.println(ex.getMessage());
             throw new IllegalArgumentException("The SentiWordNet source must be supplied.");
         } finally {
@@ -66,7 +65,6 @@ public class SentiWordNetBuilder {
                     sentiwordnet.close();
                 }
             } catch (IOException ex) {
-                // @TODO - log this somewhere useful
                 System.out.println(ex.getMessage());
             }
         }
