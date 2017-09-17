@@ -1,2 +1,2 @@
 #!/bin/sh
-export HADOOP_OPTS="-Xmx2048m"
+export HADOOP_OPTS="-Xmx4096m"
