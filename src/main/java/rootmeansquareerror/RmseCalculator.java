@@ -64,6 +64,12 @@ public class RmseCalculator {
 
             while (results.length != 0) {
 
+                for (Document d : results) {
+
+                    squaredDifferences += Math.pow(d.get_source().getUserRating() - d.get_source().getPredictedRating(), 2);
+                    numOfRecords++;
+                }
+
                 String scrollHttpBody = "{"
                     + "\"scroll\": \"10m\","
                     + "\"scroll_id\": \"" + scrollId + "\""
@@ -92,12 +98,6 @@ public class RmseCalculator {
 
                 results = objectMapper.treeToValue(scrollJson.get("hits").get("hits"), Document[].class);
                 scrollId = objectMapper.treeToValue(scrollJson.get("_scroll_id"), String.class);
-
-                for (Document d : results) {
-
-                    squaredDifferences += Math.pow(d.get_source().getUserRating() - d.get_source().getPredictedRating(), 2);
-                    numOfRecords++;
-                }
             }
 
             Double rmse = Math.sqrt(squaredDifferences / numOfRecords);

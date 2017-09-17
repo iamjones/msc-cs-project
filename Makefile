@@ -46,13 +46,13 @@ build-aspect-discovery:
 # - make build-sentiment-analyser-test c=500
 # - make build-sentiment-analyser-test c=100000
 .PHONY: build-sentiment-analyser-test
-build-sentiment-analyser-test: build
+build-sentiment-analyser-test:
 	./elasticsearch.sh
 	-hadoop jar target/msc-cs-project.jar sentimentanalysis.SentimentAnalysis $(inputDir)$(c)_reviews.json $(aspectWordsAll)
 
 # Run the dictionary builder job locally on the full data set
 .PHONY: build-sentiment-analyser
-build-sentiment-analyser: build heap-size
+build-sentiment-analyser:
 	./elasticsearch.sh
 	-hadoop jar target/msc-cs-project.jar sentimentanalysis.SentimentAnalysis $(inputDir)all_reviews.json $(aspectWordsAll)
 
